@@ -1,5 +1,11 @@
 ## 工作者线程
 
+- Web Worker 专用线程
+  - MessageChannel => ports通信
+  - BroadcastChannel => message key 通信
+- Shared Worker 共享线程
+- Service Worker 服务线程
+
 ### 简介
 
 - JavaScript 环境实际上是运行在托管操作系统中的虚拟环境。在浏览器中每打开一个页面，就会分配一个它自己的环境。这样，每个页面都有自己的内存、事件循环、DOM，等等。每个页面就相当于一个沙盒，不会干扰其他页面。对于浏览器来说，同时管理多个环境是非常简单的，因为所有这些环境都是并行执行的
@@ -74,7 +80,7 @@ self.addEventListener('message', function (message) {
   - `postMessage` 跟父类的函数对应，同样是发送消息给父类
   - `close` 关闭专用工作者线程的方法，跟`terminate`对应，用于立即终止工作者线程，没有给线程提供清理的机会，脚本会突然停止
 
-### 专用工作者线程与隐式 MessagePorts
+#### 专用工作者线程与隐式 MessagePorts
 
 1. 专用工作者线程的 Worker 对象和 DedicatedWorkerGlobalScope 与 MessagePorts 有一些相
    同接口处理程序和方法：onmessage、onmessageerror、close()和 postMessage()。这不是偶然
@@ -83,11 +89,11 @@ self.addEventListener('message', function (message) {
    在自己的接口中分别暴露了相应的处理程序和方法。换句话说，消息还是通过 MessagePort 发送，只
    是没有直接使用 MessagePort 而已
 
-### 生命周期
+#### 生命周期
 
 > 初始化 => 激活 => 终止
 
-### 在 JavaScript 行内创建工作者线程
+#### 在 JavaScript 行内创建工作者线程
 
 > 工作者线程需要基于脚本文件来创建，但这并不意味着该脚本必须是远程资源。专用工作者线程也
 > 可以通过 Blob 对象 URL 在行内脚本创建。这样可以更快速地初始化工作者线程，因为没有网络延迟
@@ -107,7 +113,7 @@ worker.postMessage('blob worker script')
 // blob worker script
 ```
 
-### 与专用工作者线程通信
+#### 与专用工作者线程通信
 
 - 可以使用`postMessage`来进行消息传递
 - 可以使用`messagechannel` 进行通信。当实例化出`messagechannel`时候，会出现两个 port 端口，同时将一个端口发送给工作者线程
@@ -145,7 +151,7 @@ self.onmessage = ({ ports }) => {
 }
 ```
 
-#### 同源方式还可以使用`BroadcastChannel`
+##### 同源方式还可以使用`BroadcastChannel`
 
 ```js
 // main.js
@@ -162,3 +168,27 @@ channel.onmessage = ({ data }) => {
   console.log(`heard ${data} in worker`)
 }
 ```
+
+#### 工作者线程数据传输
+
+- 结构化克隆算法
+- 可转移对象
+- 共享数组缓冲区
+
+### 共享者工作线程
+
+> 从行为上讲，共享工作者线程可以看作是专用工作者线程的一个扩展。线程创建、线程选项、安全
+> 限制和 importScripts()的行为都是相同的。与专用工作者线程一样，共享工作者线程也在独立执行
+> 上下文中运行，也只能与其他上下文异步通信
+
+#### 创建方式
+
+> 跟专用工作者线程保持一致
+> 共享线程，顾名思义，可以在不同标签页、不同窗口、不同内嵌框架或同源的其他工作者线程之间
+> 共享。因此，下面的脚本如果在多个标签页运行，只会在第一次执行时创建一个共享工作者线程，后续
+> 执行会连接到该线程：`new SharedWorker('./sharedWorker.js')`
+
+- 不同点：
+  - 虽然 Worker()构造函数始终会创建新实例
+  - 而 SharedWorker()则只会在相同的标识不存在的情况下才创建新实例。如果的确存在与标识匹配
+    的共享工作者线程，则只会与已有共享者线程建立新的连接
