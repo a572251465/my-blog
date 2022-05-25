@@ -1,2 +1,5 @@
 .idea
 node_modules
+.prettierrc
+package.json
+yarn.lock
