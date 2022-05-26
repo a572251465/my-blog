@@ -5,6 +5,12 @@
   - BroadcastChannel => message key 通信
 - Shared Worker 共享线程
 - Service Worker 服务线程
+  - 不能访问以及操作dom
+  - 会自动休眠，不会随着浏览器关闭而失效
+  - 离线缓存内容开发可控
+  - 处于安全考虑必须基于https/localhost 开发
+  - 能够拦截资源/fetch 请求，从而进行资源缓存
+  - 所有的api都是基于的promise
 
 ### 简介
 
@@ -190,5 +196,4 @@ channel.onmessage = ({ data }) => {
 
 - 不同点：
   - 虽然 Worker()构造函数始终会创建新实例
-  - 而 SharedWorker()则只会在相同的标识不存在的情况下才创建新实例。如果的确存在与标识匹配
-    的共享工作者线程，则只会与已有共享者线程建立新的连接
+  - 而 SharedWorker()则只会在相同的标识不存在的情况下才创建新实例。如果的确存在与标识匹配的共享工作者线程，则只会与已有共享者线程建立新的连接
