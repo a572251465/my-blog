@@ -12,11 +12,15 @@
   1. 返回请求资源，渲染进程开始渲染
   2. html解析
   3. css解析
-  4. 将html Tree以及CssOM进行复合
+  4. 将html Tree以及CssOM进行合成 => render Tree
   6. 进行布局
   7. 进行绘制
 - GPU进程
-  1. 分层进行GPU性能加速
+  1. 分层进行GPU性能加速，分层绘制
 - 渲染进程
-  1. 进行分层合成
+  1. 进行分层合成 (只触发复合层)
+    - transform: translate(npx, npx)
+    - transform: scale(n)
+    - transform: rotate(0deg)
+    - opacity: 0...1
   2. 渲染到显示器上
