@@ -1,0 +1,140 @@
+## 异步契约的发展史
+> - 回调函数
+> - 契约
+> - 异步函数
+
+## step1
+> 早期的异步执行的过程种无法得知任务何时结束，所以早期异步结果通知都是通过`回调`的形式来触发的
+```js
+function callAsync(fn, n) {
+  // 异步调用结果 是通过回调来完成的
+  setTimeout(() => fn(2 * n), 1000)
+}
+
+callAsync((result) => {
+  console.log(result)
+}, 10)
+```
+- 通过上述的实例中，回调函数就是`fn`，当我们异步执行结果后会调用`回调函数`，同时传递回调结果
+
+## step2
+> 从早期的回调函数延续到如今的契约`promise`.
+- `锲约`是挂载在顶级变量上的构造函数，可以通过`new`一个新的实例来调用
+- 在创建实例的过程中，需要传递一个执行器`executor`。 执行器中会存在两个回调函数，分别代表成功`resolve`以及失败`reject`
+- 契约有三种状态：待定`pending`，兑现`resolved`，拒绝`rejected`, 而且只能是从待定到两侧进行状态变换，不可逆
+- 同样契约中存在着很多的`实例方法`以及`静态方法`
+- 其实每次调用函数`then`结束后，都会返回一个新的契约。所以才一直可以进行调用并且修改状态
+```js
+const p = new Promise((resolve, reject) => {
+  // 通过函数resolve 已经将契约修改成为了成功态。再次调用修改状态已经无任何意义
+  resolve(111)
+  reject()
+})
+
+// 每次在then后面调用方法 其实都是一个新的promise
+p.then((res) => {
+  console.log(res)
+  return res + 1
+})
+  .then((res) => {
+    console.log(res)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+```
+
+### step3
+> 异步函数(`async`/`await`). 其实就是以同步写法执行异步代码，是`es8`规范新增的语法
+- 异步函数可以使用在普通函数，箭头函数，以及函数表达式。其实在调用方式上跟普通函数没有什么不同
+```js
+// true
+async function Foo() {}
+// true
+const Foo = async () => {}
+
+async function run() {
+  console.log('11')
+}
+console.log('22')
+run() // 11 22
+```
+
+- 异步函数如果使用`return`关键字返回了值，这个值会被Promise.resolve包装成为一个契约对象，异步函数始终返回一个契约对象
+```js
+async function run() {
+  return 3
+}
+
+// 等价=>
+
+async function run() {
+  return Promise.resolve(3)
+}
+```
+
+> 异步函数中遇到关键字`await`会暂定，直到得到响应后继续执行。可以理解为js线程在执行过程中如果遇到了`await`关键字，会让出线程的执行权。同时执行`协程`。等到协程有执行结果。在将执行权让给js线程
+> 当遇到`await`的时候，await后面的代码会放到`协程`中执行。所以就不是同步的了
+![协程的执行过程](./images/5.png)
+
+```js
+async function foo() {
+  console.log(2)
+  console.log(await Promise.resolve(8))
+  console.log(9)
+}
+
+async function bar() {
+  console.log(4)
+  console.log(await 6)
+  console.log(7)
+}
+console.log(1)
+foo()
+console.log(3)
+bar()
+console.log(5)
+
+// 1 
+// 2 
+// 3 
+// 4 
+// 5 
+// 6 
+// 7 
+// 8 
+// 9 
+// 运行时会像这样执行上面的例子：
+// (1) 打印 1；
+// (2) 调用异步函数 foo()；
+// (3)（在 foo()中）打印 2；
+// (4)（在 foo()中）await 关键字暂停执行，向消息队列中添加一个期约在落定之后执行的任务；
+// (5) 期约立即落定，把给 await 提供值的任务添加到消息队列；
+// (6) foo()退出；
+// (7) 打印 3；
+// (8) 调用异步函数 bar()；
+// (9)（在 bar()中）打印 4；
+// (10)（在 bar()中）await 关键字暂停执行，为立即可用的值 6 向消息队列中添加一个任务；
+// (11) bar()退出；
+// (12) 打印 5；
+// (13) 顶级线程执行完毕；
+// (14) JavaScript 运行时从消息队列中取出解决 await 期约的处理程序，并将解决的值 8 提供给它；
+// (15) JavaScript 运行时向消息队列中添加一个恢复执行 foo()函数的任务；
+// (16) JavaScript 运行时从消息队列中取出恢复执行 bar()的任务及值 6；
+// (17)（在 bar()中）恢复执行，await 取得值 6；
+// (18)（在 bar()中）打印 6；
+// (19)（在 bar()中）打印 7；
+// (20) bar()返回；
+// (21) 异步任务完成，JavaScript 从消息队列中取出恢复执行 foo()的任务及值 8；
+// (22)（在 foo()中）打印 8；
+// (23)（在 foo()中）打印 9；
+// (24) foo()返回。
+```
+
+## 使用实例
+> 实现`sleep`函数
+```js
+async function sleep(delay) {
+  return new Promise((resolve) => setTimeout(resolve, delay))
+}
+```
