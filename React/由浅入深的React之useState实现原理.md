@@ -168,7 +168,7 @@ function mountState<S>(
 function dispatchSetState<S, A>(
   fiber: Fiber,
   queue: UpdateQueue<S, A>,
-  action: A,
+  action: A
 ) {
 
   const lane = requestUpdateLane(fiber);
@@ -413,5 +413,16 @@ function updateReducer<S, I, A>(
 > 2. 代码`hook.memoizedState = newState;` 就是为了将新的值重新赋值到hook上，方便下次直接在hook获取新的值
 > 3. 代码`const dispatch: Dispatch<A> = (queue.dispatch: any);` 就是从queue中获取原来设定好的更新函数，这个函数值哪来的呢？就是初期渲染执行useState的时候，`dispatchSetState.bind`的返回方法
 > 4. 代码`return [hook.memoizedState, dispatch];`中，就是返回最新的值以及需要更新的方法
+
+### 4. 为什么hook不能在if 或是 for循环中
+![通过next链接](./images/1.png)
+- 上述的截图中的方式是执行`mountState`执行的，为了获取当前hook上下文。
+- 变量`workInProgressHook` 表示工作进度hook 挂载当前方法的hook
+- 通过上述的if判断可以看出，其实是通过`next`属性将每个hook上下串联起来的
+
+![useState更新](./images/2.png)
+- 如果页面的更新后，重新执行useState。从重新从Fiber中获取hook
+- 所以必须保证初次渲染以及更新渲染的hook顺序 必须保持一致
+
 ## end
 > 上述就是大致的`useState`执行的过程。以及源码分析。在源码中多处看才能得到最后的结果。并不是希望读者看到我的分析后立马就懂源码，而是提供一种看源码的思路。希望我的“啰嗦”可以帮助到大家
