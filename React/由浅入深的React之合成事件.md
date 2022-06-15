@@ -27,5 +27,35 @@
   - 所以捕获的时候先执行react事件，冒泡的时候也会执行react冒泡事件
   - react17的变化也会带来一种问题：就是跟IE执行过程不符合了。因为IE只有冒泡过程，没有捕获过程
 
+## 根据源码手写react合成事件
+> [手写实现](https://gitee.com/li_haohao_1/react-world/tree/master/react-event-hand)
+> 所有的函数的命名规则都是按照源码来的，如果想看源码的小伙伴可以先看下我这个，然后到源码中寻找，不然源码很长的哦
+```js
+const root = document.getElementById('root')
+const dispatchEvent = (e, isCapture) => {
+  let target = e.target
+  const paths = []
+  while(target) {
+    paths.push(target)
+    target = target.parentNode
+  }
+
+  if (isCapture) {
+    for (let i = paths.length - 1; i >= 0; i -= 1) {
+      const listener = paths[i]['onClick']
+      listener && listener()
+    }
+  } else {
+    for (let i = 0; i < paths.length; i += 1) {
+      const listener = paths[i]['onClick']
+      listener && listener()
+    }
+  }
+}
+root.addEventListener('click', (e) => dispatchEvent(e, true), false)
+root.addEventListener('click', (e) => dispatchEvent(e, false), true)
+```
+- 以上就是react 合成事件机制最重要的原理
+
 
 > 关注我的[GitHub博客](https://github.com/a572251465/my-blog),会不断更新基础知识/ 源码分析/ 工程化等
