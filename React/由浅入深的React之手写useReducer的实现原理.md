@@ -6,7 +6,7 @@
 2. 为什么hook必须在函数之内，不能定义在函数之内
 
 ## 手写实例demo
-> [手写useReducer地址]()
+> [手写useReducer地址](https://gitee.com/li_haohao_1/react-world/tree/master/react-event-hand)
 
 ## 手写实现解析
 - 在使用`useReducer`的时候，其实初期渲染以及更新使用的不是一个函数
