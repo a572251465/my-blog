@@ -63,5 +63,32 @@
 
 - 是使用单引号 括起来的
 - char 本质是 UTF-16 编码。实际上是一个变长编码
+- char 类型是按照 Unicode 码表进行存储的。(Unicode 兼容了 ASCII 码)
+- char 类型底层是按照 Unicode 进行存储。所以参与运算的时候，是使用 Unicode 进行运算的
 - 转义字符
-![转义字符](images/9.png)
+  ![转义字符](images/9.png)
+  ![Unicode编码表](images/11.png)
+
+```java
+public class Chars {
+    public static void main(String[] args) {
+        char a = '2';
+        System.out.println(a);
+        // char类型底层是按照Unicode进行存储。所以参与运算的时候，是使用Unicode进行运算的
+        System.out.println(a + 90);
+
+
+        // char类型的值 赋值给int的时候 会默认进行类型转换
+        int b = a;
+        System.out.println(b);
+
+        int c = 50;
+        System.out.println(c);
+
+        // 面试题
+        // 先将字符2 转换为Unicode值 为50. 将50 以及2进行运算。运算后转换为char类型
+        char d = '2' + 2;
+        System.out.println(d);
+    }
+}
+```
