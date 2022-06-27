@@ -24,3 +24,10 @@
 - 基于 CustomEvent 实现通信
 - 基于 props 主子应用间通信
 - 使用全局变量、Redux 进行通信
+
+### qiankun 分析大致原理
+
+- qiankun 基于`single-spa`来进行处理
+- 参数 entry 的访问 url 地址中，qiankun 是使用插件`import-html-entry` 来解析成为 template, script 等
+- qiankun 单例模式下可以保证每个子应用之间的样式隔离。但是父子之间的样式隔离无法保证。除非使用了影子 DOM
+- qiankun 模拟了沙箱环境。在 proxy 支持的情况下使用 proxy。不支持的情况下使用对象模拟
