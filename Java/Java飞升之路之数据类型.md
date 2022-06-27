@@ -131,4 +131,16 @@ public class Test02 {
 
 - 特殊情况：
   - 对于 byte/ short/ char 类型来说，只要在他们的表数范围中，赋值的时候不需要强制类型转换，直接赋值即可
-![](images/12.png)
+    ![](images/12.png)
+
+##### final
+- 如果被final修饰的话 变量变成常量，常量的值就不可以改变了，这个常量就是我们所说的字符常量
+- 约定俗称规定：字符常量的名字全部大写
+```java
+public class Test03 {
+    public static void main(String[] args) {
+        final double pi = 3.14;
+//        pi = 10; 如果被final修饰的话 变量变成常量，常量的值就不可以改变了，这个常量就是我们所说的字符常量。 约定俗称规定：字符常量的名字全部大写
+    }
+}
+```
