@@ -92,3 +92,43 @@ public class Chars {
     }
 }
 ```
+
+##### 布尔数据类型
+
+- 布尔类型是按位进行存储的，占一个比特位。
+
+##### 数据类型的转换
+
+- 相似类型转换过程中，如果转换会丢失精度的话，需要强制类型转换，反之是隐式类型转换
+
+```java
+    double a = 6; // 将int类型的数据 赋值给dobule类型的变量
+    System.out.println(a);
+
+    int b = (int) 6.5;
+    System.out.println(b);
+```
+
+- 多种数据类型参与运算的时候，整数类型/ 浮点类型/ 字符类型可以参与运算，但是布尔类型无法参与运算
+
+```java
+public class Test02 {
+    public static void main(String[] args) {
+//        double c1 = 12 + 1294L + 8.5F + 3.81 + 'a' + true; 编译报错
+        double c = 12 + 1294L + 8.5F + 3.81 + 'a';
+        System.out.println(c); // 1415.31 char类型a 底层转换为unicode 进行运算
+
+        int d = 1 + 'a';
+        System.out.println(d); // a 是97
+    }
+}
+```
+
+- 类型级别
+
+> - byte/ short/ char => int => long => float => double
+> - 当一个表达式中有多种数据类型的时候，要找出当前表达式中级别最高的类型，然后其余的类型都转换为当前表达式中级别最高的数据类型
+
+- 特殊情况：
+  - 对于 byte/ short/ char 类型来说，只要在他们的表数范围中，赋值的时候不需要强制类型转换，直接赋值即可
+![](images/12.png)
