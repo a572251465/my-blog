@@ -27,3 +27,21 @@ public class TestOpe {
 System.out.println(5 + '6') // 59
 System.out.println("5" + '6') // 56
 ```
+
+### 自增
+
+```java
+public class TestOpe {
+    public static void main(String[] args) {
+        int a = 5;
+
+        System.out.println(a++ + a ++); // 5 + 6 a => 7
+        System.out.println(a++ + ++a); // 8 + 8 a => 9
+        System.out.println(++a + a++); // 10 + 10  => 11
+        System.out.println(++a + ++a); // 12 + 13 => 13
+    }
+}
+```
+
+- `++a` 先进行自增，将变换后的值拿出来参与运算
+- `a++`先将自身的值拿出来参与运算，然后进行自增
