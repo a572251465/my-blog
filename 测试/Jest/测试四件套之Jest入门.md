@@ -49,3 +49,41 @@ test('is function', () => {
   ]
 }
 ```
+
+### 4. 钩子函数
+
+- `beforeAll` 所有的测试用例之前执行
+- `afterAll` 所有的测试用例之后执行
+- `beforeEach` 每个测试用例之前 都会执行一次这个钩子函数
+- `describe` 表示测试分组
+
+### 5. mock
+
+#### 1. 模拟函数
+
+```javascript
+import { runCallback } from './demo'
+
+test('Test runCallback', () => {
+  const func = jest.fn()
+  runCallback(func)
+  expect(func).toBeCalled()
+})
+
+// 模拟设置 调用函数的返回值
+func.mockReturnValue('xxx') / func.mockReturnValueOnce('xxx')
+
+// 如果判断断言判断调用次数
+expect(func.mock.calls.length).toBe(3)
+```
+
+#### 2. 模拟请求
+
+```javascript
+test.only('测试 demo', async () => {
+  axios.get.mockResolvedValue({ data: 'hello' })
+  await getData().then((data) => {
+    expect(data).toBe('hello')
+  })
+})
+```
