@@ -135,8 +135,6 @@ public class Test {
 
 ## 4. 可以作为 Class 类的类型种类
 
-<hr />
-
 ```shell
 public class Test2 {
   public static void main(String[] args) {
