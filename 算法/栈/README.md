@@ -6,7 +6,7 @@
 
 ### 基本实现
 
-```javascript
+```javascript 
 class Stack {
   constructor() {
     this.stack = []

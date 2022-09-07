@@ -61,29 +61,23 @@ test('is function', () => {
 
 #### 1. 模拟函数
 
-```javascript
-import { runCallback } from './demo'
-
-test('Test runCallback', () => {
-  const func = jest.fn()
-  runCallback(func)
-  expect(func).toBeCalled()
-})
-
-// 模拟设置 调用函数的返回值
-func.mockReturnValue('xxx') / func.mockReturnValueOnce('xxx')
-
-// 如果判断断言判断调用次数
-expect(func.mock.calls.length).toBe(3)
-```
+[测试 demo](https://github.com/a572251465/jest-case-demo/blob/main/__tests__/fnCall.test.js)
 
 #### 2. 模拟请求
 
+[测试 demo](https://github.com/a572251465/jest-case-demo/blob/main/__tests__/req.test.js)
+
+#### 3. 模拟 timer
+
 ```javascript
-test.only('测试 demo', async () => {
-  axios.get.mockResolvedValue({ data: 'hello' })
-  await getData().then((data) => {
-    expect(data).toBe('hello')
-  })
+import timer from './timer'
+
+jest.useFakeTimers()
+
+test('timer 测试', () => {
+  const fn = jest.fn()
+  timer(fn)
+  jest.runOnlyPendingTimers()
+  expect(fn).toHaveBeenCalledTimers(1)
 })
 ```
