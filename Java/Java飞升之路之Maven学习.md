@@ -58,3 +58,96 @@
 ### 3.4 仓库配置优先级
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/f35559e3f3c7415a9d2a9dcc66ac86d8.png)
+
+## 4. 创建 maven 工程 以及编译结果
+
+### 4.1 创建项目结果
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/7063a8b9448f4430bbfde18e3f330596.png)
+
+- 以上就是基于 POM 的 maven 项目。 图中标注的部分就是每个项目的凭证，而且是独一无二的
+- 如果以后别的项目中依赖了该项目，就是靠这个凭证来识别的
+
+### 4.2 maven 项目编译结果
+
+- ![在这里插入图片描述](https://img-blog.csdnimg.cn/0ecd191620d24844bdb0504d47ce9811.png)
+- ![在这里插入图片描述](https://img-blog.csdnimg.cn/1f53562696cb4933a32b6f0934886e3b.png)
+
+> - 每次我们编译结果后，其实编译后的包都可以被别的项目所利用。
+> - 靠着各自的凭证会保存到本地仓库中
+> - 仓库中的地址是上述截图 2 中的位置
+> - 当别的项目依赖该项目的使用，也会同样到本地仓库中寻找
+
+## 5. 添加依赖
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/e6641992af354fda9396b619e2dc0c6b.png)
+
+- 我们可以在上述截图的位置中添加依赖，是可以添加多个依赖的
+
+## 6. 依赖的传递性
+
+> - 此时我们有两个项目 A, B。 在项目 A 中添加到了 mybatis 依赖
+> - 此时 B 项目依赖了 A 项目。依据依赖的传递性，此时 B 项目中同样有了 mybatis 依赖
+
+- 表示 A 项目
+  - ![在这里插入图片描述](https://img-blog.csdnimg.cn/913f7263b28249ff9f75aac478f81028.png)
+- 表示 B 项目
+  - ![在这里插入图片描述](https://img-blog.csdnimg.cn/efc53903d5884dfc967800f82b0da743.png)
+
+## 7. 排除依赖
+
+> 可以排除多个依赖
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/3bced404170b415daf6c133f70258993.png)
+
+## 8. 父子类 maven 工程
+
+### 8.1 继承的 pom.xml
+
+- 父类
+
+```xml
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>3.5.7</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+```
+
+> - 通过上述的标签`dependencyManagement`可以得知，此 maven 工程只是负责管理版本的逻辑工程，不包含任何依赖
+
+- 子类
+
+```xml
+<project>
+  <parent>
+    <groupId>org.example</groupId>
+    <artifactId>maven_project1</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../maven_project1/pom.xml</relativePath>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+    </dependency>
+  </dependencies>
+</project>
+```
+
+> - 首先通过标签`parent`来表明 谁是父类工程
+> - 遇到依赖的插件的时候，可以不表明版本。根据父类的版本而依赖。例如`mybatis`
+> - 但是也可以自己依赖别的版本
+
+### 8.2 import 范围用法
+
+- ![在这里插入图片描述](https://img-blog.csdnimg.cn/f3e6285a64814bd28f957d74d956945a.png)
+- ![在这里插入图片描述](https://img-blog.csdnimg.cn/3d7eca5d11d6432f96f9ff8316493f07.png)
+
+> - 使用`import`范围关键字后，子工程依赖的版本必须跟父工程的保持一致
+> - 而且`import`的关键字必须在标签`dependencyManagement`内
