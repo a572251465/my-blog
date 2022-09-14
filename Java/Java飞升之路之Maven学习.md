@@ -17,27 +17,30 @@
 ### 3.1 仓库分类
 
 > - 仓库大致分为两大类：
->   - 第一种是远程仓库，例如：Apache 提供的中央仓库，还有阿里的镜像仓库，甚至是公司的私服仓库，简而言之，不在本地仓库都是远程仓库
->   - 第二种是本地仓库，就是将依赖下载到本地，下次使用的时候优先从本次进行查找
+
+- 第一种是远程仓库，例如：Apache 提供的中央仓库，还有阿里的镜像仓库，甚至是公司的私服仓库，简而言之，不在本地仓库都是远程仓库
+
+> - 第二种是本地仓库，就是将依赖下载到本地，下次使用的时候优先从本次进行查找
 
 ### 3.2 仓库配置
 
 ```xml
-    <mirrors>
-        <mirror>
-            <id>uinnova-snapshots</id>
-            <name>internal nexus repository</name>
-            <url>https://mvn-dev.uino.cn/repository/public/</url>
-            <mirrorOf>*</mirrorOf>
-        </mirror>
 
-        <mirror>
-            <id>aliyun-central</id>
-            <mirrorOf>!central</mirrorOf>
-            <name>aliyun central</name>
-            <url>https://maven.aliyun.com/repository/central</url>
-        </mirror>
-    </mirrors>
+<mirrors>
+    <mirror>
+        <id>uinnova-snapshots</id>
+        <name>internal nexus repository</name>
+        <url>https://mvn-dev.uino.cn/repository/public/</url>
+        <mirrorOf>*</mirrorOf>
+    </mirror>
+
+    <mirror>
+        <id>aliyun-central</id>
+        <mirrorOf>!central</mirrorOf>
+        <name>aliyun central</name>
+        <url>https://maven.aliyun.com/repository/central</url>
+    </mirror>
+</mirrors>
 ```
 
 - 一般我们只需要关注字段`mirrorOf` 以及`url`. 但是为了保险起见最好名称都不要自己动
@@ -48,6 +51,7 @@
 ### 3.3 本地仓库配置
 
 ```xml
+
 <localRepository>E:\java_maven\repo</localRepository>
 ```
 
@@ -107,15 +111,16 @@
 - 父类
 
 ```xml
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis</artifactId>
-                <version>3.5.7</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.7</version>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
 ```
 
 > - 通过上述的标签`dependencyManagement`可以得知，此 maven 工程只是负责管理版本的逻辑工程，不包含任何依赖
@@ -123,20 +128,21 @@
 - 子类
 
 ```xml
-<project>
-  <parent>
-    <groupId>org.example</groupId>
-    <artifactId>maven_project1</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <relativePath>../maven_project1/pom.xml</relativePath>
-  </parent>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.mybatis</groupId>
-      <artifactId>mybatis</artifactId>
-    </dependency>
-  </dependencies>
+<project>
+    <parent>
+        <groupId>org.example</groupId>
+        <artifactId>maven_project1</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../maven_project1/pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+    </dependencies>
 </project>
 ```
 
@@ -151,3 +157,29 @@
 
 > - 使用`import`范围关键字后，子工程依赖的版本必须跟父工程的保持一致
 > - 而且`import`的关键字必须在标签`dependencyManagement`内
+
+## 9. 插件相关的处理
+
+### 9.1 复制插件
+
+> 一般我们的配置文件都会放到`resources`目录下，随着我们的 install 一起打包到 target 中，但是如果把配置文件放置到别的位置，就无法进行打包复制了
+
+```xml
+
+<build>
+    <resources>
+        <resource>
+            <directory>src/main/java</directory>
+            <includes>
+                <include>**/*.xml</include>
+            </includes>
+        </resource>
+        <resource>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include>**/*.xml</include>
+            </includes>
+        </resource>
+    </resources>
+</build>
+```
