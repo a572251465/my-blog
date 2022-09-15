@@ -128,8 +128,6 @@ let b = obj.a;
 
 ## AMD
 
-<hr />
-
 > - AMD 是 RequireJS 在推广过程中对模块定义的规范化产出。
 > - CommonJS 规范加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作。AMD 规范则是非同步加载模块，允许指定回调函数。由于 Node.js 主要用于服务器编程，模块文件一般都已经存在于本地硬盘，所以加载起来比较快，不用考虑非同步加载的方式，所以 CommonJS 规范比较适用。但是，如果是浏览器环境，要从服务器端加载模块，这时就必须采用非同步模式，因此浏览器端一般采用 AMD 规范。此外 AMD 规范比 CommonJS 规范在浏览器端实现要来着早
 
@@ -314,8 +312,6 @@ define(["dataService", "jquery"], function (dataService, $) {
 
 ## CMD
 
-<hr />
-
 > - CMD 是 SeaJS 在推广过程中对模块定义的规范化产出。
 > - CMD 规范专门用于浏览器端，模块的加载是异步的，模块使用时才会加载执行。CMD 规范整合了 CommonJS 和 AMD 规范的特点。在 Sea.js 中，所有 JavaScript 模块都遵循 CMD 模块定义规范。
 
@@ -372,11 +368,7 @@ define(function (require) {
 });
 ```
 
-<hr />
-
 ## ES Module
-
-<hr />
 
 > ES6 模块的设计思想是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。CommonJS 和 AMD 模块，都只能在运行时确定这些东西。比如，CommonJS 模块就是对象，输入时必须查找对象属性。
 

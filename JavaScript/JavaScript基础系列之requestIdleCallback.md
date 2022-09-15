@@ -2,8 +2,6 @@
 
 ## 1. 浏览器一帧绘制内容
 
-<hr />
-
 ![一帧执行过程](https://img-blog.csdnimg.cn/62733efb57b34a17a01c062a8046fe50.jpeg#pic_center)
 
 > - 上述截图是浏览器一帧时间的执行内容
@@ -23,8 +21,6 @@
 ## 2. 什么是`requestIdleCallback`呢
 
 ### 2.1 定义
-
-<hr />
 
 `先看下mdn解释`
 
@@ -86,12 +82,8 @@
 
 ### 2.4 兼容性
 
-<hr />
-
 ![兼容性](https://img-blog.csdnimg.cn/efee4cbe42a54d46b749cb6c7128c376.png)
 
 ### 2.5 Polyfill
-
-<hr />
 
 [重写的 requestIdleCallback](https://github.com/a572251465/w-hooks/blob/main/packages/src/utils/requestIdleCallback.ts)

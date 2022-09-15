@@ -6,8 +6,6 @@
 
 ## 1. 原型链继承
 
-<hr />
-
 ![原型链继承示意图](https://img-blog.csdnimg.cn/8a118ab9730545e299e8016d9ada1766.png#pic_center)
 
 ```javascript
@@ -40,8 +38,6 @@ console.log(instance.isParent()); // true
 
 ## 2. 盗用构造函数
 
-<hr />
-
 > 1. 为了解决原型链包含引用值导致的问题，一种叫做"盗用构造函数"在社区流行起来
 > 2. 基本思路：在子类构造函数中 调用父类的构造函数。因为毕竟函数就是在特定上下文中执行代码的简单对象。可以使用 apply/ call 来调用
 
@@ -70,8 +66,6 @@ console.log(instance2.colors); // [ 'red', 'blue', 'green' ]
   - 此外子类无法访问父类原型上的方法
 
 ## 3. 组合继承
-
-<hr />
 
 ![组合继承](https://img-blog.csdnimg.cn/624cfd9f677c427b8e16ed66c6a88f9d.png#pic_center)
 
@@ -115,8 +109,6 @@ console.log(instance2.sayAge()); // 21
   - 父类的构造函数被实例化了两次
 
 ## 4. 原型式继承
-
-<hr />
 
 > 1. 核心思想：不自定义类型也可以通过原型实现对象之间的信息共享。有点类似`Object.create`
 > 2. 下列是最核心的实现原理：
@@ -165,8 +157,6 @@ console.log(p2.name); // p2
 
 ## 5. 寄生式继承
 
-<hr />
-
 > 寄生式继承背后的思路类似于寄生构造函数和工厂模式：创建一个实现继承的函数，以某种方式增强对象，然后返回这个对象
 
 ```javascript
@@ -183,8 +173,6 @@ function createAnother(original) {
 > 寄生式继承同样适合主要关注对象，而不在乎类型和构造函数的场景。object()函数不是寄生式 继承所必需的，任何返回新对象的函数都可以在这里使用
 
 ## 寄生组合式继承（常用）
-
-<hr />
 
 ![寄生组合式继承](https://img-blog.csdnimg.cn/35dad19445a14b158979ec8bd19d07c7.png#pic_center)
 

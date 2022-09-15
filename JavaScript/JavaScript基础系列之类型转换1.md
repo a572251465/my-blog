@@ -2,11 +2,7 @@
 
 ## 转换篇
 
-<hr />
-
 ### 1. Boolean(原始类型转布尔)
-
-<hr />
 
 > 使用函数`Boolean` 进行类型转换
 
@@ -35,8 +31,6 @@ console.log(Boolean([])); // true
 | 以上类型以外(Function/ Array 等) | true  |
 
 ### 2. Number(原始类型转数字)
-
-<hr />
 
 [官方规范](http://es5.github.io/#x9.3)
 
@@ -132,8 +126,6 @@ console.log(Number(obj3)); // 33 优先调用valueOf函数
 
 ### 3. String(原始类型转字符)
 
-<hr />
-
 先看下 es5 代码规范
 ![toString](https://camo.githubusercontent.com/9eb02e20b0786aba5eab6897f43502bba70aeddccdb2bff6bea24b8ec7824a70/68747470733a2f2f67772e616c6963646e2e636f6d2f7466732f544231654e6e597a486a31674b306a535a467558586372487058612d313830342d3136322e6a7067)
 
@@ -158,8 +150,6 @@ console.log(String(() => {})); // "() => {}"
 
 ### 4. 原始类型的值转换对象
 
-<hr />
-
 > 原始值转换对象非常简单，原始值通过调用 String()/ Number()/ Boolean() 构造函数，转换为它们各自的包装对象
 
 ```javascript
@@ -170,8 +160,6 @@ console.log(typeof num1); // object
 ```
 
 ### 5. 对象转字符串和数字
-
-<hr />
 
 #### 1.
 

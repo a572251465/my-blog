@@ -1,7 +1,5 @@
 # 原型链
 
-<hr />
-
 ![原型链](https://img-blog.csdnimg.cn/1113671d34be4143874943f49e94233b.png#pic_center)
 
 ## 原型到原型链

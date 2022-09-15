@@ -4,8 +4,6 @@
 
 ### Object.preventExtensions
 
-<hr />
-
 #### 1. 定义
 
 > - Object.preventExtensions() 方法让一个对象变的不可扩展，永远不能添加新的属性
@@ -52,8 +50,6 @@ console.log(obj); // {age: 21, school: {name: '大学'}}
 
 ### Object.seal
 
-<hr />
-
 #### 1. 定义
 
 > - `Object.seal` 方法封装一个对象，阻止添加新的属性并将现有属性标记为不可配置，当前属性的值只要原来是可写的就可以改变(`不可添加，不可删除`)
@@ -98,8 +94,6 @@ console.log(info); // { name: 'lihh', age: 20, school: {name: '大学'} }
 > - 但是如果是对象中嵌套对象的话，里层对象还是可以添加/删除 属性的(`对深层对象没有效果`)
 
 ### Object.freeze
-
-<hr />
 
 #### 1. 定义
 

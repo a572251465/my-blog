@@ -28,8 +28,6 @@ console.log(obj.getName());
 
 ## 规范下的 this
 
-<hr />
-
 [规范解析 this 原文地址](https://github.com/mqyqingfeng/Blog/issues/7)
 
 ```javascript
@@ -60,8 +58,6 @@ console.log((foo.bar, foo.bar)()); // 1
 - 实例 3/ 实例 4/ 实例 5 通过赋值运算后 当前的 this 是 undefined，但是在全局环境下通过隐式类型转换变换为 window
 
 ## 全局下的 this
-
-<hr />
 
 > 1. 在无显示的调用情况下，this 指向全局/ 其实就是所谓的 window
 > 2. 严格模式下 this 会是 undefined
@@ -94,8 +90,6 @@ getName(); // window
 ```
 
 ## 函数下的 this
-
-<hr />
 
 > - 谁调用函数，那么 this 就执行谁
 > - 但是箭头函数是一个例外，箭头函数的 this 指向定义当前调用者的上下文(就是所谓上级上下文的 this)
@@ -160,8 +154,6 @@ console.log(user.user.user.getName()); // lihh3
 
 ## DOM 事件下 this
 
-<hr />
-
 > - 如果是通过点击事件触发的话，this 指向 DOM 对象
 
 ```html
@@ -179,8 +171,6 @@ console.log(user.user.user.getName()); // lihh3
 ```
 
 ## 实例对象中的 this
-
-<hr />
 
 > 1. 通过关键字`new`生成一个实例对象后，如果构造函数的返回值是非引用对象类型，那么此时的 this 就是实例本身
 > 2. 通过关键字`new`生成一个实例对象后，如果构造函数返回的是一个引用对象，那么此时的 this 就是返回的引用对象
@@ -212,8 +202,6 @@ console.log(p.name); // lihh2
 
 ## class 中的 this
 
-<hr />
-
 > 1. 通过 class 生成一个实例对象后，此时的 this 就是实例本身
 
 ```javascript
@@ -228,8 +216,6 @@ console.log(p.name); // lihh
 ```
 
 ## 如何绑定 this
-
-<hr />
 
 > - 如果我们在实际的业务中就是想让 this 指向一个特定的值，我们应该用什么办法呢。请看下列三种办法
 
