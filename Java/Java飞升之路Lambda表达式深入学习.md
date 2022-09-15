@@ -93,3 +93,137 @@ public class Test {
     }
 }
 ```
+
+## 4. lambda 表达式内置 interface 书写
+
+### 4.1 Runnable 实现
+
+```shell
+public class RunnableTest {
+    public static void main(String[] args) {
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("通过匿名内部类 实现了Runnable");
+            }
+        });
+        th.start();
+
+        Thread th1 = new Thread(() -> {
+            System.out.println("通过lambda表达式 实现了Runnable");
+        });
+        th1.start();
+    }
+}
+```
+
+### 4.2 Supplier 实现
+
+```shell
+public class SupplierTest {
+    public static void main(String[] args) {
+        List<Integer> list = Arrays.asList(3, 10, 1, 9, 11, 20);
+        int max = getMax(() -> {
+            int res = list.get(0);
+            for (int item: list) {
+                if (item > res) res = item;
+            }
+            return res;
+        });
+        System.out.println(max);
+    }
+
+    public static int getMax(Supplier<Integer> supplier) {
+        return supplier.get();
+    }
+}
+```
+
+- 此接口为提供者，通过一些指定的逻辑而返回一些值
+
+### 4.3 Consumer
+
+```shell
+public class ConsumerTest {
+    public static void main(String[] args) {
+        consumerHand(msg -> {
+            System.out.println(msg + " test");
+        });
+
+        consumerTest(s -> System.out.println(s.toUpperCase()), s -> System.out.println(s.toLowerCase()), "hello");
+    }
+
+    public static void consumerHand(Consumer<String> consumer) {
+        consumer.accept("hello");
+    }
+
+    public static void consumerTest(Consumer<String> p, Consumer<String> p1, String msg) {
+        p.andThen(p1).accept(msg);
+    }
+}
+```
+
+- 此接口为消费者，给与一定的值进行消费
+- `andThen` 函数在使用的时候，当传递一个字符串的时候，多个方法并行消费。
+
+### 4.4 Predicate
+
+```shell
+public class PredicateTest {
+    public static void main(String[] args) {
+        andMethod(s -> s.contains("h"), s -> s.contains("e"));
+        orMethod(s -> s.contains("m"), s -> s.contains("w"));
+        negateMethod(s -> s.contains("m"));
+    }
+
+    static void andMethod(Predicate<String> one, Predicate<String> two) {
+        boolean isValid = one.and(two).test("hello");
+        System.out.println(isValid);
+    }
+
+    static void orMethod(Predicate<String> one, Predicate<String> two) {
+        boolean isValid = one.or(two).test("hello");
+        System.out.println(isValid);
+    }
+
+    static void negateMethod(Predicate<String> one) {
+        boolean isValid = one.negate().test("hello");
+        System.out.println(isValid);
+    }
+}
+```
+
+- `and` 多个条件是否同时满足
+- `or` 多个条件是否有一个满足
+- `negate` 表示逻辑取反的操作
+
+### 4.5 Comparator
+
+```shell
+public class ComparatorTest {
+    public static void main(String[] args) {
+        String[] arr = {"12", "245", "1", "678", "33"};
+        Arrays.sort(arr, (a, b) -> a.length() - b.length());
+
+        System.out.println(Arrays.toString(arr));
+    }
+}
+```
+
+- 一般用来比较器使用，其实内部就是用来做内部比较的
+
+### 4.6 Function
+
+```shell
+public class FunctionTest {
+    public static void main(String[] args) {
+        System.out.println(transform(Integer::parseInt, s -> s + 10, s -> s *= 10));;
+    }
+
+    public static int transform(Function<String, Integer> one, Function<Integer, Integer> two, Function<Integer, Integer> three) {
+        return one.andThen(two).andThen(three).apply("123");
+    }
+}
+```
+
+- 函数`andThen`多个嵌套的逻辑是串性的，就是上一个函数的返回值就是下一个函数的参数
