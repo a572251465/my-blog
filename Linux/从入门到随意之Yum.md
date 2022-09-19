@@ -40,3 +40,15 @@ systemctl start mysqld.service
 // 测试
 mysql
 ```
+
+## 安装 服务
+
+- 查询系统中监听的端口 `netstat -tulnp`
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/3932ec78e56f48778c17e61a1a63f500.png)
+
+## RPM 默认安装路径
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/3bdc554f91784602835fe7f42f2dcf63.png)
+
+> [参考总地址](http://www.zhufengpeixun.com/strong/html/125.8.linux-service.html#t182.%20%E6%BA%90%E7%A0%81%E5%8C%85%E6%9C%8D%E5%8A%A1%E7%AE%A1%E7%90%86)
