@@ -1,0 +1,134 @@
+<h1 align = "center">Nginx</h1>
+
+## 1. Nginx 优势
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/b89c120934904145a74ee4d0997e1814.png)
+
+## 2. Nginx 架构
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/e5ba3e094b7949b49684aa6a0c0b0bc7.png)
+
+## 3. Nginx 日志切割
+
+`/etc/logrotate.d/nginx`
+[参考地址](https://blog.csdn.net/u010201665/article/details/113948287)
+
+## 4. 安装注意事项
+
+### 4.1 默认安装下目录地址
+
+| 路径                           | 用途                     |
+| ------------------------------ | ------------------------ |
+| /etc/nginx/nginx.conf          | 核心配置文件             |
+| /etc/nginx/conf.d/default.conf | 默认 http 服务器配置文件 |
+| /etc/nginx/modules             | 最基本的共享库和内核模块 |
+| /var/cache/nginx               | nginx 的缓存目录         |
+| /var/log/nginx                 | nginx 的日志目录         |
+| /usr/sbin/nginx                | 可执行命令               |
+| /usr/sbin/nginx-debug          | 调试执行可执行命令       |
+
+### 4.2 安装目录以及路径
+
+```text
+--prefix=/etc/nginx //安装目录
+--sbin-path=/usr/sbin/nginx //可执行文件
+--modules-path=/usr/lib64/nginx/modules //安装模块
+--conf-path=/etc/nginx/nginx.conf  //配置文件路径
+--error-log-path=/var/log/nginx/error.log  //错误日志
+--http-log-path=/var/log/nginx/access.log  //访问日志
+--pid-path=/var/run/nginx.pid //进程ID
+--lock-path=/var/run/nginx.lock //加锁对象
+```
+
+## 5. nginx 配置解析
+
+```conf
+
+#user  nobody;
+worker_processes  1;
+
+error_log  logs/error.log warn;
+
+pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    gzip  on;
+
+    server {
+        listen       80;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+
+        error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+}
+```
+
+> nginx 大致分为三大块配置区域，分别是 http/ server/ location。 但是配置规则都是相同。这里会描述下每个字段的含义
+
+- `user` 表示启动子程序的用户，一般都是在安装的时候使用参数`--user` 来指定的
+- `worker_processes` 表示 worker 进程数，最好的方式就是跟 CPU 核数相同（或是 核数 - 1）
+- `error_log logs/error.log warn;` 表示如果出现 warn 级别以上的错误，应该打印到哪个文件中
+- `events{ worker_connections: 1024; }` 表示最大连接数，也就是最大并发数
+- `http` 服务模块
+  - `include mime.types;` 一些包含的数据类型，一般都是文件后缀做区分
+  - `default_type application/octet-stream;` 表示默认类型
+  - `log_format` 表示 log 格式
+  - `access_log logs/access.log main;` 表示正常的信息的 log，使用 main 格式
+  - `sendfile on;` 表示是否启动零拷贝
+  - `keepalive_timeout 65;` 表示 keep alive 链接延迟时间
+  - `gzip on;` 针对静态资源 是否启动 gzip 压缩
+  - `server` 服务
+    - `listen 80;` 表示监听端口 默认监听是 80 端口
+    - `server_name localhost;` 服务名称。一个端口可以对应多个 server_name。[参考文献](./config/%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE1.md)
+    - `charset` 表示字符集
+    - `access_log` 表示正常的打印 log 地址
+    - `location` 表示匹配地址
+      - `root` 表示根目录
+      - `index index.html index.htm;` 表示索引页面
+    - `error_page 404 /404.html;` 表示 404 找不到页面执行的路径
+
+## 6. server 匹配
+
+- 匹配规则
+
+  > 精确匹配 > `*`在前 > `*`在后 > 按文件中的顺序匹配正则式域名 > default server
+
+- HTTP 请求处理
+  ![在这里插入图片描述](https://img-blog.csdnimg.cn/79accc06f0684633b2a8220bcafe4666.png)
