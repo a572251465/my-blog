@@ -29,19 +29,6 @@
 | /usr/sbin/nginx                | 可执行命令               |
 | /usr/sbin/nginx-debug          | 调试执行可执行命令       |
 
-### 4.2 安装目录以及路径
-
-```text
---prefix=/etc/nginx //安装目录
---sbin-path=/usr/sbin/nginx //可执行文件
---modules-path=/usr/lib64/nginx/modules //安装模块
---conf-path=/etc/nginx/nginx.conf  //配置文件路径
---error-log-path=/var/log/nginx/error.log  //错误日志
---http-log-path=/var/log/nginx/access.log  //访问日志
---pid-path=/var/run/nginx.pid //进程ID
---lock-path=/var/run/nginx.lock //加锁对象
-```
-
 ## 5. nginx 配置解析
 
 ```conf
@@ -237,4 +224,84 @@ server {
       limit_conn conn_zone 1; //并发连接数最多是1
   }
 }
+```
+
+### 6.5 DNS
+
+#### sendfile
+
+- 不经过用户内核发送文件
+
+- 语法
+
+```text
+语法	sendfile on / off
+默认	sendfile off;
+上下文	http,server,location,if in location
+```
+
+#### tcp_nopush
+
+- 在 sendfile 开启的情况下，合并多个数据包，提高网络包的传输效率
+- 语法
+
+```text
+语法	tcp_nopush on / off
+默认	tcp_nopush off;
+上下文	http,server,location
+```
+
+#### tcp_nodelay
+
+- 在 keepalive 连接下，提高网络包的传输实时性
+- 语法
+
+```text
+语法	tcp_nodelay on / off
+默认	tcp_nodelay on;
+上下文	http,server,location
+```
+
+#### gzip
+
+- gzip
+- 压缩文件可以节约带宽和提高网络传输效率
+
+```text
+语法	gzip on / off
+默认	gzip off;
+上下文	http,server,location
+```
+
+<hr />
+
+- gzip_comp_level
+- 压缩比率越高，文件被压缩的体积越小
+
+```text
+语法	gzip_comp_level level
+默认	gzip_comp_level 1;
+上下文	http,server,location
+```
+
+<hr />
+
+- gzip_http_version
+- 压缩版本
+
+```text
+语法	gzip_http_version 1.0/1.1
+默认	gzip_http_version 1.1;
+上下文	http,server,location
+```
+
+<hr />
+
+- http_gzip-static_module
+- 先找磁盘上找同名的.gz 这个文件是否存在,节约 CPU 的压缩时间和性能损耗
+
+```text
+语法	gzip_static on/off
+默认	gzip_static off;
+上下文	http,server,location
 ```
