@@ -1,5 +1,7 @@
 <h1 align = "center">Nginx</h1>
 
+[详细案例参考](http://www.zhufengpeixun.com/strong/html/125.10.nginx.html#t539.%20%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97)
+
 ## 1. Nginx 优势
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/b89c120934904145a74ee4d0997e1814.png)
@@ -132,3 +134,107 @@ http {
 
 - HTTP 请求处理
   ![在这里插入图片描述](https://img-blog.csdnimg.cn/79accc06f0684633b2a8220bcafe4666.png)
+
+## 6. 核心模块
+
+### 6.1 监听 nginx 客户端状态
+
+- --with-http_stub_status_module 监控 nginx 客户端的状态
+
+- 语法
+
+```text
+Syntax: stub_status on/off;
+Default: -
+Context: server->location
+```
+
+### 6.2 随机主页
+
+- --with-http_random_index_module 在根目录里随机选择一个主页显示
+- 语法
+
+```text
+Syntax: random_index on/off;
+Default: off
+Context: location
+```
+
+### 6.3 内容替换
+
+- --with-http_sub_module 内容替换
+- 语法
+
+```text
+Syntax: sub_filter string replacement;
+Default: --
+Context: http,service,location
+```
+
+### 6.4 请求限制
+
+- --with-limit_conn_module 连接频率限制
+- --with-limit_req_module 请求频率限制
+- 一次 TCP 请求至少产生一个 HTTP 请求
+- SYN > SYN,ACK->ACK->REQUEST->RESPONSE->FIN->ACK->FIN->ACK
+
+#### 6.4.1 ab 命令
+
+- Apache 的 ab 命令模拟多线程并发请求，测试服务器负载压力，也可以测试 nginx、lighthttp、IIS 等其它 Web 服务器的压力
+  - -n 总共的请求数
+  - -c 并发的请求数
+
+```shell
+yum -y install httpd-tools
+ab -n 40 -c 20 http://127.0.0.1/
+```
+
+#### 6.4.2 连接限制
+
+- ngx_http_limit_conn_module 模块会在 NGX_HTTP_PREACCESS_PHASE 阶段生效
+- 针对全部的 worker 生效，依赖 realip 模块获得到的真实 IP
+
+- 语法
+  > limit_conn_zone 定义共享内存(大小)，以及 key 关键字
+
+```text
+# 可以以IP为key zone为空间的名称 size为申请空间的大小
+Syntax: limit_conn_zone key zone=name:size;
+Default: --
+Context: http(定义在server以外)
+```
+
+- limit_conn
+
+```text
+# zone名称 number限制的数量
+Syntax: limit_conn  zone number;
+Default: --
+Context: http,server,location
+```
+
+```text
+Syntax: limit_conn_log_level  info|notice|warn|error;
+Default: limit_conn_log_level error;
+Context: http,server,location
+```
+
+```text
+Syntax: limit_conn_status  code;
+Default: limit_conn_status 503;
+Context: http,server,location
+```
+
+- 案例
+
+```text
+limit_conn_zone $binary_remote_addr zone=conn_zone:10m;
+server {
+  location /{
+      limit_conn_status 500;
+      limit_conn_status warn;
+      limit_rate 50; //每秒最多返回50字节
+      limit_conn conn_zone 1; //并发连接数最多是1
+  }
+}
+```
