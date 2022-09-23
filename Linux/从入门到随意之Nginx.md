@@ -305,3 +305,70 @@ server {
 默认	gzip_static off;
 上下文	http,server,location
 ```
+
+## 7. 跨域
+
+> 跨域只会出现在浏览器以及服务器之间。是浏览器一种信息保密机制。只要是协议/ 域名/ 端口 任何一方出现不同都会出现跨域
+
+- 语法
+
+```text
+语法	add_header name value
+默认	add_header --;
+上下文	http,server,location
+```
+
+- nginx 配置
+
+```text
+location ~ .*\.json$ {
+     add_header Access-Control-Allow-Origin http://127.0.0.1:8080;
+     add_header Access-Control-Allow-Methods GET,POST,PUT,DELETE,OPTIONS;
+     root /data/json;
+}
+```
+
+## 8. 防盗链
+
+- 防止网站资源被盗用
+- 保证信息安全
+- 防止流量过量
+- 使用`http_refer`防盗链
+
+- 语法
+
+```text
+语法	valid_referers none、block、server_names、IP
+默认	-
+上下文	server,location
+```
+
+- 实际代码
+
+```text
+location ~ .*\.(jpg|png|gif)$ {
+    expires 1h;
+    gzip off;
+    gzip_http_version 1.1;
+    gzip_comp_level 3;
+    gzip_types image/jpeg image/png image/gif;
+    # none没有refer blocked非正式HTTP请求 特定IP
+        valid_referers none blocked 115.29.148.6;
+        if ($invalid_referer) { # 验证通过为0，不通过为1
+            return 403;
+        }
+    root /data/images;
+}
+```
+
+## 9. 正向代理
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/1c64b0649a0446dfb182d28f452ba781.png)
+
+```text
+resolver 8.8.8.8; #谷歌的域名解析地址
+location / {
+    # $http_host 要访问的主机名 $request_uri请求路径
+    proxy_pass http://$http_host$request_uri;
+}
+```
