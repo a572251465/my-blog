@@ -1,0 +1,59 @@
+<h1 align = "center">外部属性配置注入</h1>
+
+> spring 容器可以读取.properties 属性配置文件,可以将文件中的信息注入给 bean
+
+## 实例
+
+1 导入 Druid 依赖和 mysql-connector 依赖
+
+```xml
+<dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>druid</artifactId>
+    <version>1.1.10</version>
+</dependency>
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.22</version>
+</dependency>
+```
+
+2 准备属性配置文件
+
+> resources 目录下准备一个 jdbc.properties 属性配置文件
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/e06e98160fab457fad65560f33d0c8f3.png)
+
+```text
+jdbc_driver=com.mysql.cj.jdbc.Driver
+jdbc_url=jdbc:mysql://127.0.0.1:3306/mydb?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+jdbc_username=root
+jdbc_password=root
+```
+
+3. applicationContext 中添加 context 名称空间 并读取属性配置文件
+
+> 配置 druid 数据源将属性配置文件中的信息注入到连接池中
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+">
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="username" value="${jdbc_username}"></property>
+        <property name="password" value="${jdbc_password}"></property>
+        <property name="url" value="${jdbc_url}"></property>
+        <property name="driverClassName" value="${jdbc_driver}"></property>
+    </bean>
+</beans>
+```
