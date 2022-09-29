@@ -169,3 +169,86 @@ console.log(regex.test("F:\\"));
 - 其中，在 JavaScript 中字符串要表示字符 \ 时，也需要转义。
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/5f7bf53c1d02485a899fadf5b6be72f2.png)
+
+- 匹配 id
+
+```js
+let str = '<div id="container" class="main"></div>';
+const regx = /id=".*?"/;
+const regx1 = /id="[^"]*"/;
+
+console.log(str.match(regx));
+console.log(str.match(regx1));
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/672ad2e6ee6246dfb22ddc51cc8363e5.png)
+
+## 6. 匹配位置
+
+### 6.1 关键字符
+
+- `^` 匹配开头，在多行匹配中匹配开头
+- `$` 匹配结尾，在多行匹配中匹配结尾
+
+  ```js
+  console.log("hello".replace(/^|$/g, "#")); // #hello#
+  ```
+
+- `m` 表示开启多行匹配模式
+- `\b` 是单词边界，具体就是`\w`以及`\W`之间的位置。也包括 \w 与 ^ 之间的位置，和 \w 与 $ 之间的位置
+
+  ```js
+  var result = "[JS] Lesson_01.mp4".replace(/\b/g, "#");
+  console.log(result);
+  // => "[#JS#] #Lesson_01#.#mp4#"
+  ```
+
+- `\B` 其实就是`\b`相反的意思
+- `(?=p)` 其中 p 是一个子模式，即 p 前面的位置，或者说，该位置后面的字符要匹配 p
+
+  ```js
+  var result = "hello".replace(/(?=l)/g, "#");
+  console.log(result);
+  // => "he#l#lo"
+  ```
+
+- `?!p` 其实就是`?=p`的相反的意思
+
+  ```js
+  var result = "hello".replace(/(?!l)/g, "#");
+  console.log(result);
+  // => "#h#ell#o#"
+  ```
+
+  ### 6.2 位置特性
+
+  - 对于位置的理解，我们可以理解成空字符 ""
+
+  ```js
+  "hello" == "" + "h" + "" + "e" + "" + "l" + "" + "l" + "" + "o" + "";
+  ```
+
+#### 6.3 示例
+
+- 千位分隔符
+
+```js
+const s2 = "123456789";
+console.log(s2.replace(/(?!^)(?=(\d{3})+$)/g, ",")); // 123,456,789
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/a372e60baf71472b849773de49217c3d.png)
+
+- 密码验证
+
+  > 密码长度 6-12 位，由数字、小写字符和大写字母组成，但必须至少包括 2 种字符
+
+  - 首先密码的长度的正则`^[0-9a-zA-Z]{6,12}$`
+  - 匹配必须包含数字`(?=.*[0-9])`
+  - 匹配必须包含字母`(?=.*[a-z])`
+
+  ```js
+  var regex = /(?=.*[0-9])(?=.*[a-z])^[0-9A-Za-z]{6,12}$/;
+  ```
+
+  ![在这里插入图片描述](https://img-blog.csdnimg.cn/3918eefc66ea4ac3a5d0a9c9f36c2a2e.png)
