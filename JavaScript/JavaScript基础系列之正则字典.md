@@ -252,3 +252,149 @@ console.log(s2.replace(/(?!^)(?=(\d{3})+$)/g, ",")); // 123,456,789
   ```
 
   ![在这里插入图片描述](https://img-blog.csdnimg.cn/3918eefc66ea4ac3a5d0a9c9f36c2a2e.png)
+
+## 7. 括号的作用
+
+> 括号的作用是分组 以及数据引用。 看如下实例
+
+### 7.1 示例
+
+#### 7.1.1 无分组示例
+
+- 以日期为例。假设格式是 yyyy-mm-dd 的，我们可以先写一个简单的正则：
+
+```js
+var regex = /\d{4}-\d{2}-\d{2}/;
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/bb7386cf15e544a08115bbd87c5d38c6.png)
+
+#### 7.1.2 有分组示例
+
+```js
+var regex = /(\d{4})-(\d{2})-(\d{2})/;
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/9aa921ab929a4ebea1dbba1ccce4a0c6.png)
+
+- 运行结果
+
+```js
+var regex = /(\d{4})-(\d{2})-(\d{2})/;
+var string = "2017-06-12";
+console.log(string.match(regex));
+// => ["2017-06-12", "2017", "06", "12", index: 0, input: "2017-06-12"]
+```
+
+#### 7.1.3 分组值获取方式
+
+- 另外也可以使用正则实例对象的 exec 方法：
+
+```js
+var regex = /(\d{4})-(\d{2})-(\d{2})/;
+var string = "2017-06-12";
+console.log(regex.exec(string));
+// => ["2017-06-12", "2017", "06", "12", index: 0, input: "2017-06-12"]
+```
+
+- 同时，也可以使用构造函数的全局属性 $1 至 $9 来获取
+
+```js
+var regex = /(\d{4})-(\d{2})-(\d{2})/;
+var string = "2017-06-12";
+regex.test(string); // 正则操作即可，例如
+//regex.exec(string);
+//string.match(regex);
+console.log(RegExp.$1); // "2017"
+console.log(RegExp.$2); // "06"
+console.log(RegExp.$3); // "12"
+```
+
+### 7.2 替换
+
+- 比如，想把 yyyy-mm-dd 格式，替换成 mm/dd/yyyy 怎么做？
+
+```js
+var regex = /(\d{4})-(\d{2})-(\d{2})/;
+var string = "2017-06-12";
+var result = string.replace(regex, "$2/$3/$1");
+console.log(result);
+// => "06/12/2017"
+```
+
+### 7.3 反向引用
+
+> 除了使用相应 API 来引用分组，也可以在正则本身里引用分组。但只能引用之前出现的分组，即反向引用
+
+- 我们来书写正则来匹配下列格式：
+
+  ```js
+  2016-06-12
+  2016/06/12
+  2016.06.12
+  ```
+
+  - 刚开始的正则书写
+
+  ```js
+  var regex = /\d{4}(-|\/|\.)\d{2}(-|\/|\.)\d{2}/;
+  var string1 = "2017-06-12";
+  var string2 = "2017/06/12";
+  var string3 = "2017.06.12";
+  var string4 = "2016-06/12";
+  console.log(regex.test(string1)); // true
+  console.log(regex.test(string2)); // true
+  console.log(regex.test(string3)); // true
+  console.log(regex.test(string4)); // true
+  ```
+
+- 问题：
+
+  - 其中 / 和 . 需要转义。虽然匹配了要求的情况，但也匹配 "2016-06/12" 这样的数据。
+
+- 新的正则表示方法
+
+  ```js
+  var regex = /\d{4}(-|\/|\.)\d{2}\1\d{2}/;
+  var string1 = "2017-06-12";
+  var string2 = "2017/06/12";
+  var string3 = "2017.06.12";
+  var string4 = "2016-06/12";
+  console.log(regex.test(string1)); // true
+  console.log(regex.test(string2)); // true
+  console.log(regex.test(string3)); // true
+  console.log(regex.test(string4)); // false
+  ```
+
+  ![在这里插入图片描述](https://img-blog.csdnimg.cn/76f45b38da13491c8bdf9a2adc22bedb.png)
+
+- 注意里面的 \1，表示的引用之前的那个分组 (-|\/|\.)。不管它匹配到什么（比如 -），\1 都匹配那个同
+  样的具体某个字符
+
+### 7.4 嵌套括号
+
+- 以左括号（开括号）为准。比如：
+
+```js
+var regex = /^((\d)(\d(\d)))\1\2\3\4$/;
+var string = "1231231233";
+console.log(regex.test(string)); // true
+console.log(RegExp.$1); // 123
+console.log(RegExp.$2); // 1
+console.log(RegExp.$3); // 23
+console.log(RegExp.$4); // 3
+```
+
+### 7.5 \10 表示什么
+
+> - 另外一个疑问可能是，即 \10 是表示第 10 个分组，还是 \1 和 0 呢？
+> - 答案是前者，虽然一个正则里出现 \10 比较罕见。测试如下：
+
+```js
+var regex = /(1)(2)(3)(4)(5)(6)(7)(8)(9)(#) \10+/;
+var string = "123456789# ######";
+console.log(regex.test(string));
+// => true
+```
+
+- 如果真要匹配 \1 和 0 的话，请使用 (?:\1)0 或者 \1(?:0)。
