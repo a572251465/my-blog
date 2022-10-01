@@ -398,3 +398,44 @@ console.log(regex.test(string));
 ```
 
 - 如果真要匹配 \1 和 0 的话，请使用 (?:\1)0 或者 \1(?:0)。
+
+### 7.6 分组后存在量词怎么办
+
+> - 分组后面有量词的话，分组最终捕获到的数据是最后一次的匹配
+> - 以上的结果对反向引用同样是如此
+
+```js
+var regex = /(\d)+/;
+var string = "12345";
+console.log(string.match(regex));
+// => ["12345", "5", index: 0, input: "12345"]
+```
+
+### 7.7 非捕获括号
+
+> - 如果只想要括号最原始的功能，但不会引用它，即，既不在 API 里引用，也不在正则里反向引用
+> - 此时可以使用非捕获括号 (?:p) 和 (?:p1|p2|p3)
+
+```js
+var regex = /(?:ab)+/g;
+var string = "ababa abbb ababab";
+console.log(string.match(regex));
+// => ["abab", "ab", "ababab"]
+```
+
+### 7.7 练习示例
+
+- 字符串 trim 方法
+
+  - 两种实现方案：
+  - 第一种是通过正则表达式来 trim 空格
+  - 第二种是通过分组的形式来获取非空格的内容
+
+  ```js
+  const str = "  12 34  ";
+  const str1 = "  12 34  ";
+  const str2 = "   125 34  ";
+  console.log(str.replace(/^\s+|\s+$/g, ""));
+  console.log(str1.match(/(\S[\s\S]*\S)/));
+  console.log(str2.replace(/^\s*(.*?)\s*$/, "$1"));
+  ```
