@@ -31,15 +31,16 @@
 - mybatis 映射关系
 
 ```yml
-spring:
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3306/mydb?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: root
 mybatis:
   mapper-locations: classpath:mybatis/*.xml
-  type-aliases-package: com.msb.pojo
+  type-aliases-package: com.lihh.bean
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/local?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
 ```
 
 - 属性`mapper-locations` 表示 Mapper 的映射 xml
