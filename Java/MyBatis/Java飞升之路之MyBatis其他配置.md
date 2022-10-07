@@ -65,3 +65,44 @@
     <package name="com.msb.pojo"/>
 </typeAliases>
 ```
+
+## 4. 获取外部配置
+
+- jdbc.properties
+
+```text
+jdbc_driver=com.mysql.cj.jdbc.Driver
+jdbc_url=jdbc:mysql://127.0.0.1:3306/local?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+jdbc_username=root
+jdbc_password=root
+```
+
+- mapper.xml
+
+```xml
+<configuration>
+    <properties resource="jdbc.properties" />
+    <settings>
+        <setting name="logImpl" value="LOG4J2"/>
+    </settings>
+    <typeAliases>
+        <package name="com.lihh.pojo"/>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc_driver}"/>
+                <property name="url" value="${jdbc_url}"/>
+                <property name="username" value="${jdbc_username}"/>
+                <property name="password" value="${jdbc_password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--加载mapper映射文件-->
+    <mappers>
+<!--        <mapper resource="com/lihh/mapper/UserMapper.xml"/>-->
+        <package name="com.lihh.mapper"/>
+    </mappers>
+</configuration>
+```
