@@ -24,3 +24,7 @@
 - Mapper 映射文件的 namespace 必须是接口的全路径
 - sql 语句的 id 必须是对应的方法名称
 - Mapper 映射文件应该和编译之后放在同一个目录下
+
+## 4. 原理解析
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/a4a6854904ce40b78b2d826b599584e1.png)
