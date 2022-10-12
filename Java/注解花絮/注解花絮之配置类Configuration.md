@@ -188,3 +188,5 @@ public class Test_05 {
     }
 }
 ```
+
+> 以上的代码示例来自[java-learn-configuration](https://github.com/a572251465/Java-learn/tree/main/Configuration01)
