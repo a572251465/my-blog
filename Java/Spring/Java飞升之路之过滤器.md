@@ -267,3 +267,37 @@ public class Filter1_MyFilter implements Filter {
     }
 }
 ```
+
+## 7. `SpringBoot` + `Filter`
+
+- 配置类
+
+```shell
+@Component
+@WebFilter(urlPatterns = "/*")
+public class CorsFilter implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        Filter.super.init(filterConfig);
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        servletRequest.setCharacterEncoding("UTF-8");
+        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+        httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+        httpServletResponse.addHeader("Access-Control-Allow-Methods", "*");
+        httpServletResponse.addHeader("Access-Control-Allow-Headers", "*");
+
+        filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    @Override
+    public void destroy() {
+        Filter.super.destroy();
+    }
+}
+```
+
+- 注解`@Component` 将类实例 注入到 spring 容器中
+- 注解`@WebFilter` 设置过滤器拦截
