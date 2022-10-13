@@ -185,3 +185,7 @@ ${prefix}-${spring.profiles.active}.${file-extension}
 ```
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/c38c08f076994b14a5103dcbf7674471.png)
+
+## 3. 参考地址
+
+[实例代码地址](https://github.com/a572251465/Java-study-next/tree/main/AlibabaCloudConfig01)
