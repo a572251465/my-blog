@@ -1,0 +1,273 @@
+<h1 align = "center">微服务项目创建的心酸之路</h1>
+
+## 1. 注意点
+
+- 因为 SpringBoot 的各个版本差异过大，所以在版本关联的过程中一定要看官网推荐方式。[参考地址](https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E)
+- 整个创建过程可以参考[官网](https://spring-cloud-alibaba-group.github.io/github-pages/2021/en-us/index.html)
+- 其实微服务项目就是多个 spring boot 项目糅合在一起的
+
+## 2. 开始创建
+
+> 创建的项目一定是一个聚合项目才有意义。接下来就让我们开始
+
+### 2.1 聚合项目
+
+- 聚合工程中 主要是配置 xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.12.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.example</groupId>
+	<artifactId>AlibabaCloud01</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>AlibabaCloud01</name>
+	<description>AlibabaCloud01</description>
+	<packaging>pom</packaging>
+	<properties>
+		<java.version>1.8</java.version>
+		<!-- 选择SpringCloud和Alibaba版本的时候，一定要参考官网的建议，否则会有问题 -->
+		<spring-cloud.version>Hoxton.SR12</spring-cloud.version>
+		<spring-cloud-alibaba.version>2.2.9.RELEASE</spring-cloud-alibaba.version>
+	</properties>
+
+	<!--  只是做版本管理 需要的依赖是spring-cloud/ spring-cloud-alibaba	-->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>${spring-cloud-alibaba.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!--	nacos 服务注册发现	-->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+			<exclusions>
+				<!--将ribbon排除-->
+				<exclusion>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- 添加loadbalanncer依赖, 添加spring-cloud的依赖 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>
+```
+
+- 上述依赖中`spring-cloud-starter-alibaba-nacos-discovery` 以及`spring-cloud-starter-loadbalancer` 主要是居于依赖的传递性 给子类的
+
+### 2.2 9001 子项目
+
+#### 2.2.1 step1:配置 xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.example</groupId>
+		<artifactId>AlibabaCloud01</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<artifactId>AlibabaCloud-9001</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>AlibabaCloud-9001</name>
+	<description>AlibabaCloud-9001</description>
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+</project>
+```
+
+- 上述主要是配置`parent`标签内容
+
+#### 2.2.2 step2：配置 yml 配置文件
+
+```yml
+# 端口
+server:
+  port: 9001
+
+# 服务名称
+spring:
+  application:
+    name: nacos-provider
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include: "*"
+```
+
+#### 2.2.3 step3 修改启动类
+
+```shell
+package com.example.alibabacloud9001;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class AlibabaCloud9001Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(AlibabaCloud9001Application.class, args);
+	}
+
+}
+```
+
+- 注解`@EnableDiscoveryClient` 这个很重要。是必须项
+
+### 2.2 9002 子项目（跟 9001 项目类似）
+
+### 2.3 消费者项目
+
+- 配置文件
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.example</groupId>
+		<artifactId>AlibabaCloud01</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<artifactId>AlibabaCloudConumer-8804</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>AlibabaCloudConumer-8804</name>
+	<description>AlibabaCloudConumer-8804</description>
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+</project>
+```
+
+- 修改启动类
+
+```shell
+package com.example.alibabacloudconumer8804;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class AlibabaCloudConumer8804Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(AlibabaCloudConumer8804Application.class, args);
+	}
+
+	@Bean
+	@LoadBalanced
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
+}
+```
+
+> - 上述代码中注解`@EnableDiscoveryClient` 必修项
+> - 方法`restTemplate` 对应消费者来说的话必须的。因为是通过
+>   `RestTemplate` 模板来调用的
+
+- yml 文件
+
+```yml
+server:
+  port: 8804
+spring:
+  application:
+    name: nacos-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+service-url:
+  nacos-user-service: http://nacos-provider
+```
+
+- 调用方法
+
+```shell
+package com.example.alibabacloudconumer8804.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+@RestController
+public class DemoController {
+
+    @Value("${service-url.nacos-user-service}")
+    private String serverURL;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @GetMapping(value = "/consumer/nacos")
+    public String getDiscovery() {
+        return restTemplate.getForObject(serverURL + "/visit", String.class);
+    }
+}
+```
+
+## 3. 总结
+
+因为 Nacos 中本身就集成了 Ribbon 所以它本身就自带负载均衡
+
+## 4. 参考代码
+
+[参考代码](https://github.com/a572251465/Java-study-next/tree/main/AlibabaCloud01)
