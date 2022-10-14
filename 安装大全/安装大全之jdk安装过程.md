@@ -6,7 +6,7 @@
 
 > 虽然 jdk 已经出现了很多很多版本了，但是为了项目中稳定性，我们一般都不在生产环境中使用最新版而是一个稳定版，所以我们就以 1.8 为例
 
-- [下载参考地址](https://github.com/a572251465/my-blog/blob/main/Java/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%9C%A8%E7%BA%BF%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80.md)
+- [下载参考地址](https://github.com/a572251465/my-blog/blob/main/%E5%AE%89%E8%A3%85%E5%A4%A7%E5%85%A8/%E5%9C%A8%E7%BA%BF%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80.md)
 
 ## step2 上传文件以及解压
 
