@@ -1,7 +1,7 @@
 <h1 align = "center">切换数据源</h1>
 
 > - 为了保证数据的一致性，将 nacos 中数据托管到第三方数据库(mysql)是非常有必要的，接下来我们看下如何切换数据源
-> - [代码示例的源码地址]()
+> - [代码示例的源码地址](https://github.com/a572251465/Java-study-next/tree/main/AlibabaCloudChangeData01)
 
 ​ Nacos 默认自带嵌入式数据库 derby，所以我们每次创建一个 Nacos 实例就会有一个 derby，当有多个 Nacos 节点的时候，就会出现一致性问题，所以 Nacos 支持了外部数据库统一数据管理 MySql。
 
