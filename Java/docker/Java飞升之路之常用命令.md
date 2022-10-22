@@ -86,3 +86,155 @@ hello-world   latest    sha256:d1165f2212346b2bab48cb01c1e39ee8ad1be46b87873d9ca
 | 删除单个 | docker rmi -f 镜像 ID               |
 | 删除多个 | docker rmi -f 镜像 1:TAG 镜像 2:TAG |
 | 删除全部 | docker rmi -f $(docker images -qa)  |
+
+## 3. 容器命令
+
+> 一切的开始 就是先拉取镜像
+> ![在这里插入图片描述](https://img-blog.csdnimg.cn/b3aa3f6180164450a401e2ef6172b969.png)
+
+### 3.1 创建并启动
+
+创建并启动一个容器的命令
+
+```shell
+docker run [OPTIONS] IMAGE [COMMAND]
+```
+
+OPTIONS 中的一些参数
+
+| options | 说明                                                                                                                         |
+| ------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| -\-name | "容器新名字": 为容器指定一个名称                                                                                             |
+| -d      | 后台运行容器，并返回容器 ID，也即启动守护式容器                                                                              |
+| `-i`    | `以交互模式运行容器，通常与 -t 同时使用`                                                                                     |
+| `-t`    | `为容器重新分配一个伪输入终端，通常与 -i 同时使用`                                                                           |
+| -P:     | 随机端口映射                                                                                                                 |
+| -p      | 指定端口映射，有以下四种格式 ip:hostPort:containerPort<br>ip::containerPort<br>`hostPort:containerPort`<br>containerPort<br> |
+
+交互式的容器
+
+```shell
+docker run -it centos /bin/bash
+```
+
+### 3.2 列举容器
+
+​ 我们要查看当前正在运行的容器有哪些，可以通过 ps 命令来查看
+
+```shell
+docker ps [OPTIONS]
+```
+
+OPTONS 可用的参数
+
+| OPTIONS    | 说明                                      |
+| ---------- | ----------------------------------------- |
+| -a         | 列出当前所有正在运行的容器+历史上运行过的 |
+| -l         | 显示最近创建的容器。                      |
+| -n         | 显示最近 n 个创建的容器。                 |
+| -q         | 静默模式，只显示容器编号。                |
+| --no-trunc | 不截断输出。                              |
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2d6f789729c04a54baffc0df50b53ffe.png)
+
+#### 3.2.1 退出命令
+
+​ 我们启动了一个容器后，如何退出容器
+
+| 退出方式 | 说明           |
+| -------- | -------------- |
+| exit     | 容器停止退出   |
+| ctrl+p+q | 容器不停止退出 |
+
+#### 3.2.2 启动容器
+
+```shell
+docker start 容器ID或者容器名称
+```
+
+#### 3.2.3 重启容器
+
+```shell
+docker restart 容器id或者名称
+```
+
+#### 3.2.4 停止容器
+
+```shell
+docker stop 容器ID或者名称
+```
+
+还可以通过强制停止方式处理
+
+```shell
+docker kill
+```
+
+#### 3.2.5 删除容器
+
+​ 有时候容器使用完成就没有作用了，我们想要删除掉容器，这时可以通过 rm 命令
+
+```shell
+docker rm 容器ID
+docker rm -f $(docker ps -qa)
+docker ps -a -q | xargs docker rm
+```
+
+## 4. 其他命令
+
+### 2.4.1 守护式容器
+
+```shell
+docker run -d 容器名称
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/6c15585fac894e269c9b0abe4c7ac1e0.png)
+
+我们通过 docker ps -a 可以看到刚刚启动的容器已经退出了
+
+​ 为了让守护式容器能够一直执行，我们可以在启动容器后在后台运行一个循环的脚本
+
+```shell
+docker run -d centos /bin/bash -c 'while true;do echo hello bobo;sleep 2;done'
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/012ba20aaeef441093d4d197cb39f77a.png)
+
+查看我们运行的日志
+
+```shell
+docker logs -t -f --tail 3 容器ID
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/3f129e845f4b4d95bea3d7cb221a299f.png)
+
+查看容器中运行的进程
+
+```shell
+docker top 容器ID
+```
+
+### 2.4.2 查看容器细节
+
+我们想要查看容器的细节可以通过 inspect 命令
+
+```shell
+docker inspect 容器ID
+```
+
+### 2.4.3 进入运行的容器
+
+| 进入方式 | 说明                                         |
+| -------- | -------------------------------------------- |
+| exec     | 在容器中打开新的终端,并且可以启动新的进程    |
+| attach   | 直接进入容器启动命令的终端，不会启动新的进程 |
+
+### 2.4.4 文件复制
+
+​ 我们有时需要从容器中拷贝内容到宿主机中
+
+```shell
+docker cp 容器ID:容器内路径  目的地路径
+
+docker cp 6de:/hello.txt /root
+```
