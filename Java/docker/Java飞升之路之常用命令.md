@@ -180,6 +180,14 @@ docker rm -f $(docker ps -qa)
 docker ps -a -q | xargs docker rm
 ```
 
+### 3.3 编译镜像
+
+> 根据 DockerFile 将文件编译成为镜像文件
+
+```shell
+docker build -f dockerFile1 -t bobo/centos .
+```
+
 ## 4. 其他命令
 
 ### 2.4.1 守护式容器
