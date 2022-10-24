@@ -109,3 +109,55 @@ DockerFile 命令
 | RUN           |         | ENTRYPOINT |
 | ONBUILD       |         |            |
 | .dockerignore |         |            |
+
+## 2. 案例
+
+> &emsp;&emsp;我们从官方 pull 下来的`centos`镜像是 mini 版的，所以不带有`vim`这些基础命令，那我们就来自定义一个镜像，功能比官方下载的强大点，同时运用下各个指令。
+
+- 编写`dockerFile`文件
+
+```shell
+FROM centos
+MAINTAINER bobo<dengpbs@163.com>
+
+ENV MYPATH /usr/local
+WORKDIR $MYPATH
+
+RUN yum -y install vim
+
+EXPOSE 80
+
+CMD echo $MYPATH
+CMD echo "success--------------ok"
+CMD /bin/bash
+```
+
+- 通过命令`docker build` 进行构建
+
+&emsp;&emsp;然后将脚本构建成对应的镜像文件。
+
+```bash
+docker build -f dockerfile名称 -t 新建的镜像名:TAG .
+```
+
+- 通过命令`docker run`运行 之前构建的镜像
+
+```bash
+docker run -it 新镜像名称:TAG
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191227011815639.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9kcGItYm9ib2thb3lhLXNtLmJsb2cuY3Nkbi5uZXQ=,size_16,color_FFFFFF,t_70)
+
+运行容器后，落脚点是 `/usr/local` 因为我们配置了`WORKDIR`
+
+### 2.1 镜像历史
+
+&emsp;&emsp;查看一个镜像文件的变更历史可以使用如下命令:
+
+```bash
+docker history 镜像名
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191227012021461.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9kcGItYm9ib2thb3lhLXNtLmJsb2cuY3Nkbi5uZXQ=,size_16,color_FFFFFF,t_70)
+
+在本例中我们用到了 `FROM` `MAINTAINER` `RUN` `EXPOSE` `ENV` `WORKDIR` 命令
