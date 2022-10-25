@@ -1,6 +1,7 @@
 <h1 align = "center">MySQL集群搭建</h1>
 
 > MySQL 集群搭建在实际项目中还是非常必须的，我们通过 PXC【Percona XtraDB Cluster】来实现强一致性数据库集群搭建。
+> 安装【percona-xtradb-cluster】 过程中，内部就有 MySQL。所以没有必要专门安装 MySQL
 
 - 拉取镜像
 
