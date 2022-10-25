@@ -190,7 +190,7 @@ docker build -f dockerFile1 -t bobo/centos .
 
 ## 4. 其他命令
 
-### 2.4.1 守护式容器
+### 4.1 守护式容器
 
 ```shell
 docker run -d 容器名称
@@ -222,7 +222,7 @@ docker logs -t -f --tail 3 容器ID
 docker top 容器ID
 ```
 
-### 2.4.2 查看容器细节
+### 4.2 查看容器细节
 
 我们想要查看容器的细节可以通过 inspect 命令
 
@@ -230,14 +230,14 @@ docker top 容器ID
 docker inspect 容器ID
 ```
 
-### 2.4.3 进入运行的容器
+### 4.3 进入运行的容器
 
 | 进入方式 | 说明                                         |
 | -------- | -------------------------------------------- |
 | exec     | 在容器中打开新的终端,并且可以启动新的进程    |
 | attach   | 直接进入容器启动命令的终端，不会启动新的进程 |
 
-### 2.4.4 文件复制
+### 4.4 文件复制
 
 ​ 我们有时需要从容器中拷贝内容到宿主机中
 
@@ -246,3 +246,27 @@ docker cp 容器ID:容器内路径  目的地路径
 
 docker cp 6de:/hello.txt /root
 ```
+
+## 5. 数据卷
+
+- 关于数据卷的常用的命令
+
+```bash
+docker volume create --name v1 # 创建volume
+docker volume rm v1 # 删除volume
+docker volume inspect v1 # 查看 volume 详情
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/e56a70ecdfd34da48cbd138b59227718.png)
+
+## 6. 网络
+
+- 关于网络的常用命令
+
+```bash
+docker network create --subnet=172.20.0.0/24 pxc-net
+docker network inpsect pxc-net # 查看详情
+docker network rm pxc-net # 删除网段
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/5b65a1f5a5b44f1b80beace2e85178ab.png)
