@@ -9,25 +9,25 @@
 ## 实例
 
 ```js
-const { render, h } = Vue
+const { render, h } = Vue;
 
 const MyComponent = {
   setup(props, ctx) {
-    return () => h('div', {}, ctx.slots.default(), ctx.slots.header())
-  }
-}
+    return () => h("div", {}, ctx.slots.default(), ctx.slots.header());
+  },
+};
 
 const VueComponent = {
   setup() {
     return () =>
       h(MyComponent, null, {
-        default: () => h('p', { color: 'red' }, '123'),
-        header: () => h('h2', null, '345')
-      })
-  }
-}
+        default: () => h("p", { color: "red" }, "123"),
+        header: () => h("h2", null, "345"),
+      });
+  },
+};
 
-render(h(VueComponent), document.getElementById('app'))
+render(h(VueComponent), document.getElementById("app"));
 ```
 
 ## 源码分析
