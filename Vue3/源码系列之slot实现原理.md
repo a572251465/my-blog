@@ -44,4 +44,38 @@ render(h(VueComponent), document.getElementById("app"));
 
 ## 结束
 
+```html
+<!-- MyComponent 子组件内容 -->
+<div id="myComponent">
+  <slot name="header"></slot>
+  <slot></slot>
+  <slot name="footer"></slot>
+</div>
+
+<!-- 使用组件 父类内容 -->
+<div id="parent">
+  <template #header> <span>1111</span> </template>
+  <template #default> <span>2222</span> </template>
+  <template #footer> <span>333</span> </template>
+</div>
+```
+
+上述`父组件一定会渲染成为以下结构`：
+
+```js
+{
+  type: "div",
+  props: {},
+  children: {
+    header: () => h("span", null, "111"),
+    default: () => h("span", null, "222")
+    footer: () => h("span", null, "333")
+  }
+}
+```
+
+- 其实就是将每个 slot 都渲染为可执行函数。函数返回 slot 中 html 结构
+- 然后在渲染子类的时候，将`$slots = this.children`. 其实就是将 children 赋值给$slots.（上面截图有证明）
+- 然后子类渲染的过程中，从$slots 上获取函数并且执行
+
 > `slot`的原理很简单，就分析这么多了。下一篇我们来分析`ref`如何赋值的
