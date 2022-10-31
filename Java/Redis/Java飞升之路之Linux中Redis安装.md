@@ -80,6 +80,14 @@ source /etc/profile
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/a675852ebcf44b179204bde3a1aa27fe.png)
 
+## step6 启动 Redis 的命令
+
+> - service redis_6379 start
+> - service redis_6379 stop
+> - service redis_6379 status
+
+执行命令的脚本在`/etc/init.d`目录中
+
 ## 总结
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/d8385cc78a8d4b86bd336402caa9b127.png)
