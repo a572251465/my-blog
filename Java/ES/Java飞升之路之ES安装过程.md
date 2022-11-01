@@ -32,3 +32,9 @@
   - 修改内容为`log`, `data`,`端口`
 
 - 开始启动 es
+  `./bin/elasticsearch -d `
+
+## 问题发生情况
+
+- [参考 1](https://blog.csdn.net/tao441033618/article/details/120131890)
+- es 是不能用 root 用户进行启动的。 必须新建一个用户，用新建的用户启动（但是一定要赋予文件夹权限`chown -R [user]:[group] 文件夹地址`）
