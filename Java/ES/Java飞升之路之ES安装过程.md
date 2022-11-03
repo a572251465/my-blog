@@ -3,6 +3,7 @@
 ## Elasticsearch 环境
 
 - [下载地址](https://www.elastic.co/cn/downloads/elasticsearch)
+- [8.3 下载地址](https://www.elastic.co/cn/downloads/past-releases/elasticsearch-8-3-3)
 - 解压后目录结构：
   - Elasticsearch 目录结构
     | 名称 | 含义 |
@@ -38,3 +39,8 @@
 
 - [参考 1](https://blog.csdn.net/tao441033618/article/details/120131890)
 - es 是不能用 root 用户进行启动的。 必须新建一个用户，用新建的用户启动（但是一定要赋予文件夹权限`chown -R [user]:[group] 文件夹地址`）
+
+## 强烈建议
+
+[单机模式下 使用这篇文章](https://blog.csdn.net/wlei0618/article/details/123936913)
+[单机模式下 使用结合这篇文章](https://www.modb.pro/db/432873)
