@@ -18,7 +18,7 @@
 
 ​ **2)** **Keywords**：
 
-​ **keyword**：适用于索引结构化的字段，可以用于过滤、排序、聚合。keyword 类型的字段只能通过精确值（exact value）搜索到。Id 应该用 keyword
+​ **keyword**：适用于索引结构化的字段，可以用于过滤、排序、聚合。keyword 类型的字段只能通过精确值（exact value）搜索到。Id 应该用 keyword。不做分词
 
 ​ constant_keyword：始终包含相同值的关键字字段
 
