@@ -663,3 +663,15 @@ GET /product/_search
 - 如果`should`子句遇到了`must`或是`filter`的话，`should`的条件满足或是不满足都可以，所以字段`minimum_should_match`就是 0
 - 如果`should`子句没有遇到`must`或是`filter`的话，字段`minimum_should_match`默认是 1
 - 基于第一点的话，所以我们必须手动指定`minimum_should_match`的满足项。可以让几项起到作用
+
+### 查看分词结果
+
+> 可以使用以下的语法检查分词结果
+
+```bash
+GET _analyze
+{
+  "text": "my name is li h h test,test。test3",
+  "analyzer": "pattern"
+}
+```
