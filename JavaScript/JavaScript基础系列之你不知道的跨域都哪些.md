@@ -31,7 +31,7 @@
 
 #### 原理
 
-利用 <script> 标签没有跨域限制的漏洞，网页可以得到从其他来源动态产生的 JSON 数据。JSONP 请求一定需要对方的服务器做支持才可以。
+利用 `<script>` 标签没有跨域限制的漏洞，网页可以得到从其他来源动态产生的 JSON 数据。JSONP 请求一定需要对方的服务器做支持才可以。
 
 #### 和 AJAX 对比
 
@@ -54,26 +54,26 @@ JSONP 优点是简单兼容性好，可用于解决主流浏览器的跨域数�
 function jsonp(url, keyword) {
   return new Promise((resolve, reject) => {
     // 每次jsonp的函数名字都是随机的
-    const funName = `jsonp${(Math.random() * 100000) | 0}${+new Date()}`
-    keyword = keyword || '伏天氏'
+    const funName = `jsonp${(Math.random() * 100000) | 0}${+new Date()}`;
+    keyword = keyword || "伏天氏";
     // 请求的url 必须包含callback参数，参数函数必须是全局的，这个将是回调函数
     url =
       url ||
-      `https://www.baidu.com/sugrec?prod=pc&from=pc_web&wd=${keyword}&callback=${funName}`
+      `https://www.baidu.com/sugrec?prod=pc&from=pc_web&wd=${keyword}&callback=${funName}`;
     // 其实jsonp的原理就是利用了script无跨域限制的特性
-    const script = document.createElement('script')
-    script.src = url
+    const script = document.createElement("script");
+    script.src = url;
 
     // 表示回调函数，之后删除window额外添加的数据
     window[funName] = function (event) {
-      resolve(event)
-      Reflect.deleteProperty(window, funName)
-    }
-    script.onerror = reject
+      resolve(event);
+      Reflect.deleteProperty(window, funName);
+    };
+    script.onerror = reject;
 
     // 添加到head 进行加载
-    document.querySelector('head').appendChild(script)
-  })
+    document.querySelector("head").appendChild(script);
+  });
 }
 ```
 
