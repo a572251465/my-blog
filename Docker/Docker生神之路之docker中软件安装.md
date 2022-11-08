@@ -27,3 +27,21 @@ docker run -p 3306:3306 --privileged=true --name mysql -v /var/log/mysql:/var/lo
 - `--name` 表示容器名称
 - `-v` 表示参数
 - `-d` 表示后台运行
+
+## 3. 单机 Redis
+
+- 创建备用目录 以及下载文件
+
+```bash
+mkdir -p /opt/redis/data
+mkdir -p /opt/redis/conf
+
+cd /opt/redis/conf
+wget http://download.redis.io/redis-stable/redis.conf
+```
+
+- 运行 Redis 容器
+
+```bash
+docker run -d -p 6379:6379 --name mall-redis -v /opt/redis/data/:/data -v /opt/redis/conf/:/etc/redis redis redis-server /etc/redis/redis.conf
+```
