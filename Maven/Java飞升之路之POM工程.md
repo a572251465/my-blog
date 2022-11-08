@@ -79,7 +79,7 @@
   - test 范围表明使用此依赖范围的依赖，只在编译测试代码和运行测试的时候需要，应用的正常运行不需要此类依赖。典型的例子就是 JUnit，它只有在编译测试代码及运行测试的时候才需要。Junit 的 jar 包就在测试阶段用就行了，你导出项目的时候没有必要把 junit 的东西到处去了就，所在在 junit 坐标下加入 scope-test
 
 - Import
-  - import 范围只适用于 pom 文件中的<dependencyManagement>部分。表明指定的 POM 必须使用<dependencyManagement>部分的依赖。
+  - import 范围只适用于 pom 文件中的`<dependencyManagement>`部分。表明指定的 POM 必须使用`<dependencyManagement>`部分的依赖。
     注意：import 只能用在 dependencyManagement 的 scope 里。
   - 父工程
     - ![在这里插入图片描述](https://img-blog.csdnimg.cn/c9e5294590ba42c49255ab0183e4f953.png)
@@ -94,7 +94,7 @@
 
 - 被继承的工程（B 工程）只能是 POM 工程。
 
-> 注意：在父项目中放在<dependencyManagement>中的内容时不被子项目继承，不可以直接使用放在<dependencyManagement>中的内容主要目的是进行版本管理。里面的内容在子项目中依赖时坐标只需要填写<group id>和<artifact id>即可。（注意：如果子项目不希望使用父项目的版本，可以明确配置 version）。
+> 注意：在父项目中放在`<dependencyManagement>`中的内容时不被子项目继承，不可以直接使用放在`<dependencyManagement>`中的内容主要目的是进行版本管理。里面的内容在子项目中依赖时坐标只需要填写`<group id>`和`<artifact id>`即可。（注意：如果子项目不希望使用父项目的版本，可以明确配置 version）。
 
 ### 2.3 聚合关系
 
