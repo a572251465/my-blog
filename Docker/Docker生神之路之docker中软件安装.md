@@ -1,6 +1,6 @@
 <h1 align = "center">docker中软件安装注意事项</h1>
 
-## 1. nginx
+## 1. 单机 nginx
 
 ```bash
 docker run --name nginx -p 80:80 -v /opt/nginx/nginx.conf:/etc/nginx/nginx.conf -v /opt/nginx/html:/usr/share/nginx/html -v /opt/nginx/conf.d:/etc/nginx/conf.d -v /var/log/nginx/logs:/var/log/nginx -e TZ=Asia/Shanghai -d nginx

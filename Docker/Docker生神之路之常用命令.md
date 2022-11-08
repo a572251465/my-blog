@@ -270,3 +270,9 @@ docker network rm pxc-net # 删除网段
 ```
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/5b65a1f5a5b44f1b80beace2e85178ab.png)
+
+## 7. 设置开机启动
+
+```bash
+docker update --restart=always xxx
+```
