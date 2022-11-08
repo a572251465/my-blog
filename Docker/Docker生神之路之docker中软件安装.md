@@ -15,3 +15,15 @@ docker run --name nginx -p 80:80 -v /opt/nginx/nginx.conf:/etc/nginx/nginx.conf 
 > 安装过程 参照下记
 
 [参照地址](https://blog.csdn.net/weixin_46244732/article/details/114315708)
+
+## 2. 单机 MySQL
+
+```bash
+docker run -p 3306:3306 --privileged=true --name mysql -v /var/log/mysql:/var/log/mysql -v /opt/mysql/data:/var/lib/mysql -v /opt/mysql/conf/:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=root -d mysql:5.7
+```
+
+- `-p` 指定端口
+- `-privileged` 表示内部拥有 root 权限
+- `--name` 表示容器名称
+- `-v` 表示参数
+- `-d` 表示后台运行
