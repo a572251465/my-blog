@@ -40,4 +40,4 @@
 | 2.1.0.RELEASE-2.1.14.RELEASE | Greenwich.SR5           |
 | 2.2.0.M4                     | Hoxton.SR4              |
 
-SpringCloud 版本是和 SpringBoot 有关联关系的，官网中可以查看：[https://docs.spring.io/spring-cloud/docs/current/reference/html/](https://docs.spring.io/spring-cloud/docs/current/reference/html/)
+SpringCloud 版本是和 SpringBoot 有关联关系的，官网中可以查看：[版本控制](https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E)

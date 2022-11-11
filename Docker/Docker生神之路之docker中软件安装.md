@@ -45,3 +45,25 @@ wget http://download.redis.io/redis-stable/redis.conf
 ```bash
 docker run -d -p 6379:6379 --name mall-redis -v /opt/redis/data/:/data -v /opt/redis/conf/:/etc/redis redis redis-server /etc/redis/redis.conf
 ```
+
+## 4. 单机 nacos
+
+- 建立备用目录 以及防止文件
+
+```bash
+mkdir -p /opt/nacos/conf
+```
+
+- 运行容器
+
+```bash
+docker run -d --env MODE=standalone  --name nacos -v /opt/nacos/conf/:/home/nacos/conf -p 8848:8848 nacos/nacos-server:2.0.3
+
+docker update --restart=always nacos
+```
+
+- `-p` 指定端口
+- `--env` 表示单机模式下运行
+- `--name` 表示容器名称
+- `-v` 表示参数
+- `-d` 表示后台运行
