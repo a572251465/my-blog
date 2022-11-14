@@ -80,6 +80,15 @@
 
 - 包`spring-cloud-starter-loadbalancer` 是表示负载均衡的包，此处不进行安装也是可以的
 - 包`spring-cloud-starter-alibaba-nacos-config` 表示配置文件的包
+- 包`spring-cloud-starter-bootstrap` 为了加载`bootstrap`文件的，如果没有这个包是不会主动加载的
+
+  ```bash
+  <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-bootstrap</artifactId>
+      <version>3.1.4</version>
+  </dependency>
+  ```
 
 ### 1.2 配置 yml 文件
 
