@@ -74,3 +74,4 @@ module.exports = {
 
 - `__webpack_modules__` 对象表示把所有的模块都整合在一起， 可以通过路径引用来调用
 - `__webpack_require__` 模拟`require`的加载过程
+- `require` 直接将`值` 进行导出
