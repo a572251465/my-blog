@@ -40,7 +40,7 @@ public String handler_resource(BlockException exception){
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/d7183219db234d18b245fa75f19df3f3.png)
 
-测试，测试我们去快速访问 http://localhost:8401/byResource，就会出现我们使用@SentinelResource 注解中 blockHandler 属性提供的解决限流异常的方法。
+测试，测试我们去快速访问 `http://localhost:8401/byResource`，就会出现我们使用@SentinelResource 注解中 blockHandler 属性提供的解决限流异常的方法。
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/8d8746a135284ea0a8db2b3c3c2101ef.png)
 
@@ -129,7 +129,7 @@ public String bycustomer(){
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/51f389f3b2e742e299b99c7d2aaf717d.png)
 
-添加流控规则以后，我们再来频繁访问 http://localhost:8401/bycustomer，就会看见是 CustomerBlockHandler 类型的 handlerException1 方法来处理自定义限流逻辑
+添加流控规则以后，我们再来频繁访问 `http://localhost:8401/bycustomer`，就会看见是 CustomerBlockHandler 类型的 handlerException1 方法来处理自定义限流逻辑
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/220106ea565a462bb9b76b276b6aa523.png)
 

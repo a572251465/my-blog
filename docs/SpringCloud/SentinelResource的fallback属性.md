@@ -57,7 +57,7 @@ public class DemoController {
 }
 ```
 
-此时我们任务添加了异常，此时如果我们访问 http://localhost:8084/consumer/fallback/4（id 非法）地址时，就会出现对应的显示效果：
+此时我们任务添加了异常，此时如果我们访问 `http://localhost:8084/consumer/fallback/4`（id 非法）地址时，就会出现对应的显示效果：
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/cc84c607f9c546e8ba8b8e6681afeb45.png)
 
@@ -153,7 +153,7 @@ public class DemoController {
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/d058bd1720dc47c1b883958d191587e2.png)
 
-此时我们来访问 http://localhost:8084/consumer/fallback/6 看效果：
+此时我们来访问 `http://localhost:8084/consumer/fallback/6` 看效果：
 
 - 在没有触发熔断之前的异常交给 fallback 来处理
 

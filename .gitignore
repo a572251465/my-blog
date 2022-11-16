@@ -3,3 +3,4 @@ node_modules
 .prettierrc
 package.json
 yarn.lock
+docs/.vitepress/dist

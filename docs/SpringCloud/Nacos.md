@@ -74,7 +74,7 @@
 
    ![在这里插入图片描述](https://img-blog.csdnimg.cn/b1d9946b8ff04d6098ab4a23d9ef479e.png)
 
-4. 得到结果以后为了验证是否成功开启 Nacos，我们需要访问：http://localhost:8848/nacos
+4. 得到结果以后为了验证是否成功开启 Nacos，我们需要访问：`http://localhost:8848/nacos`
 
    ![在这里插入图片描述](https://img-blog.csdnimg.cn/518cfc78212c4027b214ed1e780847a2.png)
 

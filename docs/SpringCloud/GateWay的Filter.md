@@ -20,7 +20,7 @@
 
 案例：比如我们现在在 9001 微服务上加一个 context-path 配置
 
-```yml
+```bash
 server:
   port: 9001
   servlet:
@@ -28,7 +28,7 @@ server:
 .....
 ```
 
-现在 9001 的访问路径变为 http://localhost:9001/nacos-provider/msb/get
+现在 9001 的访问路径变为 `http://localhost:9001/nacos-provider/msb/get`
 
 目前的网关 9999 配置信息为
 
@@ -54,7 +54,7 @@ spring:
             - Path=/msb/** # 匹配对应地址
 ```
 
-为了保证断言能够匹配，此时通过网关的访问地址应该改为：http://localhost:9999/msb/nacos-provider/msb/get，但是出现了 404 因为多了一层路径 http://localhost:9001/msb/nacos-provider/msb/get
+为了保证断言能够匹配，此时通过网关的访问地址应该改为：`http://localhost:9999/msb/nacos-provider/msb/get`，但是出现了 404 因为多了一层路径 `http://localhost:9001/msb/nacos-provider/msb/get`
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/6243239a6a944b21a2c9a68d1e44f285.png)
 

@@ -2,7 +2,7 @@
 
 ## 1. 导入依赖
 
-```xml
+```bash
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -30,7 +30,7 @@
 - jdbc 相关的数据
 - mybatis 映射关系
 
-```yml
+```bash
 mybatis:
   mapper-locations: classpath:mybatis/*.xml
   type-aliases-package: com.lihh.bean

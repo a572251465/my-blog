@@ -1,6 +1,7 @@
 const {sidebar, nav} = require("./sideBar")
 
 export default {
+  base: "/blog",
   title: "始于清风",
   description: "'帅小伙' 的知识世界 ",
   themeConfig: {

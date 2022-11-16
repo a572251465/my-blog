@@ -31,7 +31,7 @@
 
 ## 5. nginx 配置解析
 
-```conf
+```bash
 
 #user  nobody;
 worker_processes  1;
@@ -105,7 +105,7 @@ http {
   - `gzip on;` 针对静态资源 是否启动 gzip 压缩
   - `server` 服务
     - `listen 80;` 表示监听端口 默认监听是 80 端口
-    - `server_name localhost;` 服务名称。一个端口可以对应多个 server_name。[参考文献](./config/%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE1.md)
+    - `server_name localhost;` 服务名称。一个端口可以对应多个 server_name。
     - `charset` 表示字符集
     - `access_log` 表示正常的打印 log 地址
     - `location` 表示匹配地址
