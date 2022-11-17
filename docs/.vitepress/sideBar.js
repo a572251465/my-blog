@@ -3,6 +3,8 @@ const path = require("path")
 
 const rootPath = path.resolve(__dirname, "..")
 
+const nameMapping = require("./mvFiles")
+
 // 1. 读取目录 以及筛选真正的目录
 const excludeDirs = [".vitepress", "public"]
 const dirs = fs.readdirSync(rootPath, "utf-8")
@@ -22,11 +24,11 @@ const resolveAssignPath = (filename, joinPath, relativePath = rootPath, level) =
   if (isFile) {
     return [
       {
-        text: filename,
+        text: nameMapping[filename],
         collapsible: true,
         collapsed: level !== 0,
         items: dirs.map(text => ({
-          text: text.slice(0, -3),
+          text: nameMapping[text.slice(0, -3)],
           link: `/${joinPath}/${text.slice(0, -3)}`
         }))
       }
@@ -55,7 +57,7 @@ const getFirstItem = (i) => {
 
 // 3. 根据sidebar 获取nav
 const nav = dirs.map((text, index) => ({
-  text: text,
+  text: nameMapping[text],
   link: getFirstItem(index)
 }))
 
