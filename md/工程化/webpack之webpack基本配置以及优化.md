@@ -195,3 +195,35 @@ module.exports = {
 
 > - 其实我们通过 webpack 不仅可以打包。其实还是可以打包库的，但是需要上述的配置
 > - 不仅是上述的打包方式，其实还有更多的打包方式。 更多的可以参考下官网 API
+
+## 5. 配置静态文件
+
+```js
+const path = require("path");
+
+const resolvePath = (...urls) => path.resolve(__dirname, ...urls);
+
+module.exports = {
+  mode: "development",
+  entry: resolvePath("./src/index.js"),
+  output: {
+    path: resolvePath("dist"),
+    filename: "[name].js",
+  },
+  module: {
+    rules: [
+      // 配置识别静态文件 图片
+      {
+        test: /\.(png|jpg|gif|bmp|svg)$/,
+        type: "asset/resource",
+        generator: {
+          filename: "images/[hash][ext]",
+        },
+      },
+    ],
+  },
+};
+```
+
+> - webpack5 之后取代了 url-loader 以及 file-loader 功能。使用内置的功能`asset/resource` 来实现静态文件处理。
+> - [详细参照 官网 API](https://webpack.docschina.org/guides/asset-modules#root)
