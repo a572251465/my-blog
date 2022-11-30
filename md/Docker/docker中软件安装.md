@@ -48,7 +48,8 @@ docker run -d -p 6379:6379 --name mall-redis -v /opt/redis/data/:/data -v /opt/r
 
 ## 4. 单机 nacos
 
-- 建立备用目录 以及防止文件
+- 建立备用目录 以及放置文件
+  > 需要从官网中下载源码，将其中 conf 文件进行放置
 
 ```bash
 mkdir -p /opt/nacos/conf
@@ -67,3 +68,33 @@ docker update --restart=always nacos
 - `--name` 表示容器名称
 - `-v` 表示参数
 - `-d` 表示后台运行
+
+## 5. 单机部署 Java
+
+- 准备 DockerFile 文件
+
+  ```bash
+  FROM openjdk:8
+  MAINTAINER lihh
+  LABEL name="springboot-mybatis" version="1.0" author="bobo"
+  COPY springboot-mybatis-demo-0.0.1-SNAPSHOT.jar springboot-mybatis.jar
+  CMD ["java","-jar","springboot-mybatis.jar"]
+  ```
+
+- 构建镜像
+
+  ```bash
+  docker build -t sbm-image .
+  ```
+
+- 运行镜像
+
+  ```bash
+  docker run -d --name sb01 -p 8081:8080  sbm-image
+  ```
+
+- 查看启动日志
+
+  ```bash
+  docker logs sb01
+  ```
