@@ -143,6 +143,23 @@ public class UserTest3 {
 ```
 
 ```shell
+public class BookFactory implements FactoryBean<Book> {
+    @Override
+    public Book getObject() throws Exception {
+        Book book = new Book();
+        book.setName("十万个为什么");
+        book.setAuthor("lihh");
+        return book;
+    }
+
+    @Override
+    public Class<?> getObjectType() {
+        return null;
+    }
+}
+```
+
+```shell
 public class BookTest {
     @Test
     public void test() {

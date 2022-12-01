@@ -63,6 +63,44 @@ Docker 作为开发人员需要掌握，作为`运维人员`必须掌握。
 
 - 直接安装 docker 官网的指示进行安装。[参照](https://docs.docker.com/engine/install/centos/)
 
+### 5.0 简述安装步骤 跟官网一致
+
+- 清除上次 docker 安装
+
+```shell
+sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+```
+
+- 下载 yum 相关的工具包 以及依赖源
+
+```shell
+sudo yum install -y yum-utils
+sudo yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+```
+
+- 配置阿里云的镜像地址：
+
+```shell
+yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+```
+
+- 安装 docker 相关的插件
+
+```shell
+sudo yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+```
+
+- 安装成功后 执行 5.1 步骤 主要看 【启动 docker 服务】 以及 5.3
+
 ### 5.1 安装后注意事项
 
 - 查看 docker 的版本
