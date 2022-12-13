@@ -68,6 +68,7 @@ Docker 作为开发人员需要掌握，作为`运维人员`必须掌握。
 - 清除上次 docker 安装
 
 ```shell
+sudo yum remove docker-ce docker-ce-cli containerd.io docker-compose-plugin
 sudo yum remove docker \
                   docker-client \
                   docker-client-latest \
@@ -90,7 +91,11 @@ sudo yum-config-manager \
 - 配置阿里云的镜像地址：
 
 ```shell
+# 方式1
 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+
+# 方式2
+wget -O /etc/yum.repos.d/docker.ce.repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 ```
 
 - 安装 docker 相关的插件
@@ -125,13 +130,6 @@ systemctl stop docker
 
 ```shell
 systemctl restart docker
-```
-
-- 删除 docker
-
-```shell
-yum -y remov docker-ce
-rm -rf /var/lib/docker
 ```
 
 ### 5.2 如果下载速度过慢
